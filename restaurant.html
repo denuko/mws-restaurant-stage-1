@@ -39,7 +39,11 @@
                 <section id="restaurant-container">
                     <h1 id="restaurant-name"></h1>
                     <section id="restaurant-view">
-                        <img id="restaurant-img">
+                        <picture id="restaurant-img-sources">
+                            <source id="restaurant-img-medium" media="(min-width: 430px)" srcset="">
+                            <source id="restaurant-img-large" media="(min-width: 734px)" srcset="">
+                            <img id="restaurant-img">
+                        </picture>
                         <p id="restaurant-cuisine"></p>
                     </section>
                     <section id="restaurant-info">
@@ -66,8 +70,12 @@
         <!-- Beginning scripts -->
         <!-- Database helpers -->
         <script type="text/javascript" src="js/dbhelper.js"></script>
+        <!-- Helper javascript file -->
+        <script type="application/javascript" charset="utf-8" src="js/helper.js"></script>
         <!-- Main javascript file -->
         <script type="text/javascript" src="js/restaurant_info.js"></script>
+        <!-- Picturefill polyfill
+        <script type="text/javascript" src="js/picturefill.js"></script>
         <!-- Google Maps -->
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzXDGrWxj1GsJUbo9ZKSJPz07o2K1ljgc&libraries=places&callback=initMap"></script>
         <!-- End scripts -->
