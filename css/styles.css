@@ -277,6 +277,9 @@ nav h1 a {
     font-size: 0.9rem;
 }
 @media screen and (max-width: 633px)  {
+    nav h1 a {
+        font-size: 1rem;
+    }
     .filter-options h2 {
         margin: 0 0.5rem;
     } 
