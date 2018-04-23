@@ -61,6 +61,19 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 #footer a {
     padding: 1.2rem 0;
 }
+/* ====================== Accessibility ====================== */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #bf1722;
+    color: #fff;
+    padding: 8px;
+    z-index: 1001;
+}
+.skip-link:focus {
+    top: 0;
+}
 /* ====================== Navigation ====================== */
 nav {
     width: 100%;

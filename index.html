@@ -9,6 +9,7 @@
     </head>
 
     <body>
+        <a href="#restaurants-container" class="skip-link">Skip to content</a>
         <header>
             <nav>
                 <h1><a href="/">Restaurant Reviews</a></h1>
@@ -16,10 +17,10 @@
         </header>
 
         <main id="maincontent">
-            <section id="map-container">
+            <section id="map-container" role="application" aria-labelledby="Restaurants on google map">
                 <div id="map"></div>
             </section>
-            <section role="search" aria-label="Filter Restaurants">
+            <section id="restaurants-container" role="search" aria-label="Filter Restaurants">
                 <div class="filter-options">
                     <div class="filter-container">
                         <div class="filter">
