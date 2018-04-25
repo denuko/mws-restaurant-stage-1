@@ -155,9 +155,14 @@ createRestaurantHTML = (restaurant) => {
     li.append(picture);
 
     const name = document.createElement('h3');
-    name.innerHTML = restaurant.name;
     li.append(name);
     
+    const more = document.createElement('a');
+    more.href = DBHelper.urlForRestaurant(restaurant);
+    more.innerHTML = restaurant.name;
+    more.tabIndex = 0;
+    name.append(more);
+
     const neighborhood = document.createElement('p');
     neighborhood.innerHTML = restaurant.neighborhood;
     li.append(neighborhood);
@@ -165,12 +170,6 @@ createRestaurantHTML = (restaurant) => {
     const address = document.createElement('p');
     address.innerHTML = restaurant.address;
     li.append(address);
-
-    const more = document.createElement('a');
-    more.innerHTML = 'View Details';
-    more.href = DBHelper.urlForRestaurant(restaurant);
-    more.tabIndex = 0;
-    li.append(more)
 
     return li
 }
