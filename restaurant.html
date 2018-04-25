@@ -20,7 +20,7 @@
                 <h1><a href="/">Restaurant Reviews</a></h1>
             </nav>
             <!-- Beginning breadcrumb -->
-            <ul id="breadcrumb" >
+            <ul id="breadcrumb" role="navigation">
                 <li><a href="/">Home</a></li>
             </ul>
             <!-- End breadcrumb -->
@@ -29,32 +29,34 @@
         <!-- End header -->
         <!-- Beginning main -->
         <main id="maincontent">
-            <section class="content">
-                <!-- Beginning map -->
+            <!-- Beginning map -->
 
-                <section id="map-container" role="application" aria-label="Restaurant on google map">
-                    <div id="map"></div>
-                </section>
-                <!-- End map -->
-                <!-- Beginning restaurant -->
-                <section id="restaurant-container" tabindex="-1">
-                    <h1 id="restaurant-name" tabindex="0"></h1>
-                    <picture id="restaurant-img-sources">
-                        <source id="restaurant-img-medium" media="(min-width: 430px)" srcset="">
-                        <source id="restaurant-img-large" media="(min-width: 734px)" srcset="">
-                        <img id="restaurant-img">
-                    </picture>
-                    <p id="restaurant-cuisine"></p>
-                    <p id="restaurant-address"></p>
+            <section id="map-container" role="application" aria-labelledby="map-heading">
+                <h2 id="map-heading" hidden>Restaurant on google map</h2>
+                <div id="map"></div>
+            </section>
+            <!-- End map -->
+            <!-- Beginning restaurant -->
+            <section id="restaurant-container" tabindex="-1" aria-labelledby="restaurant-name">
+                <h2 id="restaurant-name" tabindex="0"></h2>
+                <picture id="restaurant-img-sources">
+                    <source id="restaurant-img-medium" media="(min-width: 430px)" srcset="">
+                    <source id="restaurant-img-large" media="(min-width: 734px)" srcset="">
+                    <img id="restaurant-img">
+                </picture>
+                <p id="restaurant-cuisine"></p>
+                <p id="restaurant-address"></p>
+                <section id="restaurant-hours-container" role="region" aria-labelledby="restaurant-hours-heading">
+                    <h3 id="restaurant-hours-heading" hidden>Restaurant Hours</h3>
                     <table id="restaurant-hours" tabindex="0"></table>
                 </section>
-                <!-- end restaurant -->
-                <!-- Beginning reviews -->
-                <section id="reviews-container">
-                    <ul id="reviews-list"></ul>
-                </section>
-                <!-- End reviews -->
             </section>
+            <!-- end restaurant -->
+            <!-- Beginning reviews -->
+            <section id="reviews-container" role="region">
+                <ul id="reviews-list"></ul>
+            </section>
+            <!-- End reviews -->
         </main>
         <!-- End main -->
 

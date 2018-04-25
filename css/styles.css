@@ -185,7 +185,7 @@ nav h1 a {
     max-width: 100%;
     min-height: 248px;
 }
-#restaurants-list li h1 {
+#restaurants-list li h3 {
     color: #f18200;
     font-family: Arial,sans-serif;
     font-size: 1.5em;
@@ -379,7 +379,7 @@ nav h1 a {
         max-height: calc(10% - 0.5em);
         order: -4;
     }
-    #restaurant-hours {
+    #restaurant-hours-container {
         height: 80%;
         width: 38%;
         order: -5;
@@ -428,7 +428,7 @@ nav h1 a {
         max-height: calc(10% - 0.5em);
         width: 50%;
     }
-    #restaurant-hours{
+    #restaurant-hours-container {
         height: 70%;
     }
 }

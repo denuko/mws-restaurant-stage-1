@@ -74,6 +74,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
     const cuisine = document.getElementById('restaurant-cuisine');
     cuisine.innerHTML = restaurant.cuisine_type;
+    cuisine.setAttribute('aria-label', `Restaurant cuisine type ${restaurant.cuisine_type}`);
 
     // fill operating hours
     if (restaurant.operating_hours) {
@@ -108,8 +109,11 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     const container = document.getElementById('reviews-container');
+    container.setAttribute('aria-labelledby', 'reviews-heading');
+    
     const title = document.createElement('h2');
     title.innerHTML = 'Reviews';
+    title.id = 'reviews-heading';
     container.appendChild(title);
 
     if (!reviews) {

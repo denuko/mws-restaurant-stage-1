@@ -9,7 +9,7 @@
     </head>
 
     <body>
-        <a href="#restaurants-container" class="skip-link">Skip to content</a>
+        <a href="#filter-container" class="skip-link">Skip to content</a>
         <header>
             <nav>
                 <h1><a href="/">Restaurant Reviews</a></h1>
@@ -17,10 +17,12 @@
         </header>
 
         <main id="maincontent">
-            <section id="map-container" role="application" aria-labelledby="Restaurants on google map">
+            <section id="map-container" role="application" aria-labelledby="map-heading">
+                <h2 id="map-heading" hidden>Restaurants on google map</h2>
                 <div id="map"></div>
             </section>
-            <section id="restaurants-container" role="search" aria-label="Filter Restaurants">
+            <section id="filter-container" role="search" aria-labelledby="filter-heading">
+                <h2 id="filter-heading" hidden>Filter Restaurants</h2>
                 <div class="filter-options">
                     <div class="filter-container">
                         <div class="filter">
@@ -37,6 +39,9 @@
                         </div>
                     </div>
                 </div>
+            </section>
+            <section id="restaurants-container" role="region" aria-labelledby="restaurants-heading">
+                <h2 id="restaurants-heading" hidden>Restaurants List</h2>
                 <ul id="restaurants-list"></ul>
             </section>
         </main>
