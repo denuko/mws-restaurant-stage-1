@@ -138,18 +138,18 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 createRestaurantHTML = (restaurant) => {
     const li = document.createElement('li');
 
-    const image_filename = DBHelper.imageUrlForRestaurant(restaurant);
+    const imageFilename = DBHelper.imageUrlForRestaurant(restaurant);
     // get all possible names of an image depending on its size (small, medium, large)
-    const images_resized = imageNamesBySize(image_filename);
+    const imagesResized = imageNamesBySize(imageFilename);
 
     // create picture element for restaurant image in restaurant list
     const picture = document.createElement('picture');
     // add source to picture element for medium screens
-    addImageSourceToPicture(picture, '(min-width: 440px) and (max-width:479px)', images_resized.medium);
+    addImageSourceToPicture(picture, '(min-width: 440px) and (max-width:479px)', imagesResized.medium);
 
     const image = document.createElement('img');
     image.className = 'restaurant-img';
-    image.src = images_resized.small;   // small image by default
+    image.src = imagesResized.small;   // small image by default
     image.alt = restaurant.name;
     picture.append(image);
     li.append(picture);

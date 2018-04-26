@@ -55,21 +55,21 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     const address = document.getElementById('restaurant-address');
     address.innerHTML = restaurant.address;
 
-    const image_filename = DBHelper.imageUrlForRestaurant(restaurant);
+    const imageFilename = DBHelper.imageUrlForRestaurant(restaurant);
     // get all possible names of an image depending on its size (small, medium, large)
-    const images_resized = imageNamesBySize(image_filename);
+    const imagesResized = imageNamesBySize(imageFilename);
 
     // assign srcset attribute for medium picture source
-    const restaurant_img_medium = document.getElementById('restaurant-img-medium');
-    restaurant_img_medium.srcset = images_resized.medium;
+    const restaurantImgMedium = document.getElementById('restaurant-img-medium');
+    restaurantImgMedium.srcset = imagesResized.medium;
 
     // assign srcset attribute for large picture source
-    const restaurant_img_large = document.getElementById('restaurant-img-large');
-    restaurant_img_large.srcset = `${images_resized.medium} 1x, ${images_resized.large} 2x`;
+    const restaurantImgLarge = document.getElementById('restaurant-img-large');
+    restaurantImgLarge.srcset = `${imagesResized.medium} 1x, ${imagesResized.large} 2x`;
 
     const image = document.getElementById('restaurant-img');
     image.className = 'restaurant-img'
-    image.src = images_resized.small;   // small image by default
+    image.src = imagesResized.small;   // small image by default
     image.alt = restaurant.name;
 
     const cuisine = document.getElementById('restaurant-cuisine');
