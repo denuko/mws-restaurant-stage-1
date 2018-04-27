@@ -145,7 +145,7 @@ createRestaurantHTML = (restaurant) => {
     // create picture element for restaurant image in restaurant list
     const picture = document.createElement('picture');
     // add source to picture element for medium screens
-    addImageSourceToPicture(picture, '(min-width: 440px) and (max-width:479px)', imagesResized.medium);
+    addImageSourceToPicture(picture, '(min-width: 363px) and (max-width:479px)', imagesResized.medium);
 
     const image = document.createElement('img');
     image.className = 'restaurant-img';

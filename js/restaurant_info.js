@@ -59,11 +59,15 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     // get all possible names of an image depending on its size (small, medium, large)
     const imagesResized = imageNamesBySize(imageFilename);
 
-    // assign srcset attribute for medium picture source
+    // assign srcset attribute for medium picture source (medium screens)
     const restaurantImgMedium = document.getElementById('restaurant-img-medium');
     restaurantImgMedium.srcset = imagesResized.medium;
+    
+    // assign srcset attribute for large picture source (medium screens)
+    const restaurantImgMediumLarge = document.getElementById('restaurant-img-medium-large');
+    restaurantImgMediumLarge.srcset = imagesResized.large;
 
-    // assign srcset attribute for large picture source
+    // assign srcset attribute for large picture source (large screens)
     const restaurantImgLarge = document.getElementById('restaurant-img-large');
     restaurantImgLarge.srcset = `${imagesResized.medium} 1x, ${imagesResized.large} 2x`;
 
