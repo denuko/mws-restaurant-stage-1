@@ -5,10 +5,11 @@ module.exports = function(grunt) {
                 options: {
                     sizes: [{
                             name: 'small',
-                            width: 300
+                            width: 320,
+                            quality: 60
                         }, {
                             name: 'medium',
-                            width: 400,
+                            width: 500,
                             quality: 60
                         }, {
                             name: 'large',
