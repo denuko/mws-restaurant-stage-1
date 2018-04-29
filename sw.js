@@ -1,0 +1,182 @@
+const CACHE_NAME = 'mws-restaurant-v1';
+// 
+// Create  a seperate cache for images, because 
+// the idea is to let them live between versions of the app
+const CACHE_IMG_NAME = 'mws-restaurant-img';
+
+// Create a const for all static files to be explicitly cached
+const CACHE_STATIC_FILES = [
+    '/',
+    '/data/restaurants.json',
+    '/js/dbhelper.js',
+    '/js/helper.js',
+    '/js/picturefill.js',
+    '/js/restaurant_info.js',
+    '/js/main.js',
+    '/js/sw/index.js',
+    '/css/styles.css'
+];
+
+// Accept a message that tells service worker to take over (skip waiting)
+self.addEventListener('message', function(event) {
+    if (event.data.action === 'skipWaiting') {
+        self.skipWaiting();
+    }
+});
+
+// Install service worker
+self.addEventListener('install', (event) => {
+    event.waitUntil(
+            // Open cache in the install event to get everything we need
+            // either from the cache or from the network and cache them
+            // before the service worker takes over
+            caches.open(CACHE_NAME)
+            .then((cache) => {
+                return cache.addAll([
+                    '/',
+                    '/data/restaurants.json',
+                    '/js/dbhelper.js',
+                    '/js/helper.js',
+                    '/js/picturefill.js',
+                    '/js/restaurant_info.js',
+                    '/js/main.js',
+                    '/js/sw/index.js',
+                    '/css/styles.css'
+                ]);
+            })
+            .catch(function(error) {
+                console.log(error);
+            })
+            );
+});
+
+// Activate service worker
+self.addEventListener('activate', (event) => {
+    console.log('Activate service worker');
+});
+
+// Intercept the requests made to the server
+self.addEventListener('fetch', (event) => {
+    var requestUrl = new URL(event.request.url);
+    if (requestUrl.origin === location.origin) {
+        // Cache images
+        if (requestUrl.pathname.startsWith('/img/')) {
+            event.respondWith(serveImage(event.request));
+            return;
+        }
+    } else {
+        // Cache google maps resources
+        if (requestUrl.host === 'maps.gstatic.com' ||
+                requestUrl.host === 'maps.googleapis.com' ||
+                requestUrl.host === 'fonts.gstatic.com' ||
+                requestUrl.host === 'fonts.googleapis.com') {
+            event.respondWith(serveGoogleMaps(event.request));
+            return;
+        }
+    }
+
+    // Check if request url matches one of explicitly determined files to be cached
+    if (CACHE_STATIC_FILES.includes(requestUrl.pathname)) {
+        // Cache this files
+        event.respondWith(serveStaticFiles(event.request));
+    }
+});
+
+/**
+ * Check if static files exist in the cache, else fetch them from network
+ */
+serveStaticFiles = (request) => {
+    // Open the cache and match the request with the ones present in the cache
+    return caches.open(CACHE_NAME).then((cache) => {
+        return cache.match(request.url).then((response) => {
+            // Check if response found in cache
+            if (response)
+                return response;
+
+            // If the request doesn’t match, redirect the request to the server
+            // and return a fetch to the network for the original request
+            return fetch(request).then((networkResponse) => {
+                if (!networkResponse.ok) {
+                    throw Error(networkResponse.statusText);
+                }
+
+                // Put a clone of response in the cache
+                // because we can use the body of a response once
+                cache.put(request.url, networkResponse.clone());
+
+                // Return network response
+                return networkResponse;
+            }).catch(function(error) {
+                console.log('Caching files error: \n', error);
+            });
+        });
+    });
+}
+
+/**
+ * Check if google map resources exist in the cache, else fetch them from network
+ */
+serveGoogleMaps = (request) => {
+    // Open the cache and match the request with the ones present in the cache
+    return caches.open(CACHE_NAME).then((cache) => {
+        return cache.match(request.url).then((response) => {
+            // Check if response found in cache
+            if (response)
+                return response;
+
+            // If the request doesn’t match, redirect the request to the server
+            // and return a fetch to the network for the original request
+            return fetch(request).then((networkResponse) => {
+                if (!networkResponse.ok) {
+                    if (request.url === 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBzXDGrWxj1GsJUbo9ZKSJPz07o2K1ljgc&libraries=places&callback=initMap') {
+                        console.log('Map loading failed');
+                    }
+
+                    throw Error(networkResponse.statusText);
+                }
+
+                // Put a clone of response in the cache   
+                // because we can use the body of a response once
+                cache.put(request.url, networkResponse.clone());
+
+                // Return network response
+                return networkResponse;
+            }).catch(function(error) {
+                console.log('Caching google maps resources error: \n', error);
+            });
+        });
+    });
+}
+
+
+/**
+ * Check if images exist in the cache, else fetch them from network
+ */
+serveImage = (request) => {
+    // Cache images without the size suffix to return from the cache, even when 
+    // the browser requests a different size of the same image
+    var storageUrl = request.url.replace(/-(large|medium|small)\.jpg$/, '');
+
+    // Open the cache and match the request with the ones present in the cache
+    return caches.open(CACHE_IMG_NAME).then((cache) => {
+        return cache.match(storageUrl).then((response) => {
+            if (response)
+                return response;
+
+            // If the request doesn’t match, redirect the request to the server
+            // and return a fetch to the network for the original request
+            return fetch(request).then((networkResponse) => {
+                if (!networkResponse.ok) {
+                    throw Error(networkResponse.statusText);
+                }
+
+                // Put a clone of response in the cache
+                // because we can use the body of a response once
+                cache.put(storageUrl, networkResponse.clone());
+
+                // Return network response
+                return networkResponse;
+            });
+        });
+    });
+};
