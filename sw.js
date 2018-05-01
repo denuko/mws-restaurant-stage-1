@@ -59,7 +59,7 @@ self.addEventListener('activate', (event) => {
 
 // Intercept the requests made to the server
 self.addEventListener('fetch', (event) => {
-    var requestUrl = new URL(event.request.url);
+    const requestUrl = new URL(event.request.url);
     if (requestUrl.origin === location.origin) {
         // Cache images
         if (requestUrl.pathname.startsWith('/img/')) {
@@ -112,7 +112,7 @@ serveStaticFiles = (request) => {
 serveImage = (request) => {
     // Cache images without the size suffix to return from the cache, even when 
     // the browser requests a different size of the same image
-    var storageUrl = request.url.replace(/-(large|medium|small)\.jpg$/, '');
+    const storageUrl = request.url.replace(/-(large|medium|small)\.jpg$/, '');
 
     // Open the cache and match the request with the ones present in the cache
     return caches.open(CACHE_IMG_NAME).then((cache) => {
