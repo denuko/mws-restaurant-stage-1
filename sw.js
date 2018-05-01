@@ -7,6 +7,7 @@ const CACHE_IMG_NAME = 'mws-restaurant-img';
 // Create a const for all static files to be explicitly cached
 const CACHE_STATIC_FILES = [
     '/',
+    '/restaurant.html',
     '/data/restaurants.json',
     '/js/dbhelper.js',
     '/js/helper.js',
@@ -34,6 +35,7 @@ self.addEventListener('install', (event) => {
             .then((cache) => {
                 return cache.addAll([
                     '/',
+                    '/restaurant.html',
                     '/data/restaurants.json',
                     '/js/dbhelper.js',
                     '/js/helper.js',
