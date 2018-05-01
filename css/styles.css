@@ -130,6 +130,19 @@ nav h1 a {
     width: 100%;
     background-color: #ccc;
 }
+#map-offline {
+    z-index: 0;
+    text-align: center;
+    padding: 2em 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+#map-offline-message {
+    font-weight: 200;
+    font-size: 1.5em
+}
 /* ====================== Restaurant Filtering ====================== */
 .filter-container {
     display: flex;
@@ -205,15 +218,15 @@ nav h1 a {
     font-size: 1rem;
 }
 #restaurants-list li a {
-/*    background-color: orange;
-    border-bottom: 3px solid #eee;
-    color: #fff;
-    display: inline-block;
-    font-size: 1rem;
-    margin: 1em 0 0;
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;*/
+    /*    background-color: orange;
+        border-bottom: 3px solid #eee;
+        color: #fff;
+        display: inline-block;
+        font-size: 1rem;
+        margin: 1em 0 0;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;*/
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -345,9 +358,9 @@ nav h1 a {
         min-height: 160px;
         padding: 0 0.8rem 1.5rem;
     }
-/*    #restaurants-list li a {
-        padding: 1rem 1.2rem
-    }*/
+    /*    #restaurants-list li a {
+            padding: 1rem 1.2rem
+        }*/
     #restaurants-list li h3 {
         font-size: 1.2em;
     }

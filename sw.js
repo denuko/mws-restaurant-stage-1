@@ -64,15 +64,6 @@ self.addEventListener('fetch', (event) => {
             event.respondWith(serveImage(event.request));
             return;
         }
-    } else {
-        // Cache google maps resources
-        if (requestUrl.host === 'maps.gstatic.com' ||
-                requestUrl.host === 'maps.googleapis.com' ||
-                requestUrl.host === 'fonts.gstatic.com' ||
-                requestUrl.host === 'fonts.googleapis.com') {
-            event.respondWith(serveGoogleMaps(event.request));
-            return;
-        }
     }
 
     // Check if request url matches one of explicitly determined files to be cached
@@ -112,42 +103,6 @@ serveStaticFiles = (request) => {
         });
     });
 }
-
-/**
- * Check if google map resources exist in the cache, else fetch them from network
- */
-serveGoogleMaps = (request) => {
-    // Open the cache and match the request with the ones present in the cache
-    return caches.open(CACHE_NAME).then((cache) => {
-        return cache.match(request.url).then((response) => {
-            // Check if response found in cache
-            if (response)
-                return response;
-
-            // If the request doesn’t match, redirect the request to the server
-            // and return a fetch to the network for the original request
-            return fetch(request).then((networkResponse) => {
-                if (!networkResponse.ok) {
-                    if (request.url === 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBzXDGrWxj1GsJUbo9ZKSJPz07o2K1ljgc&libraries=places&callback=initMap') {
-                        console.log('Map loading failed');
-                    }
-
-                    throw Error(networkResponse.statusText);
-                }
-
-                // Put a clone of response in the cache   
-                // because we can use the body of a response once
-                cache.put(request.url, networkResponse.clone());
-
-                // Return network response
-                return networkResponse;
-            }).catch(function(error) {
-                console.log('Caching google maps resources error: \n', error);
-            });
-        });
-    });
-}
-
 
 /**
  * Check if images exist in the cache, else fetch them from network
