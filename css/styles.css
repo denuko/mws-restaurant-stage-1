@@ -217,17 +217,6 @@ nav h1 a {
     margin: 0;
     font-size: 1rem;
 }
-#restaurants-list li a {
-    /*    background-color: orange;
-        border-bottom: 3px solid #eee;
-        color: #fff;
-        display: inline-block;
-        font-size: 1rem;
-        margin: 1em 0 0;
-        text-align: center;
-        text-decoration: none;
-        text-transform: uppercase;*/
-}
 
 /* ====================== Restaurant Details ====================== */
 .inside header {
@@ -358,9 +347,6 @@ nav h1 a {
         min-height: 160px;
         padding: 0 0.8rem 1.5rem;
     }
-    /*    #restaurants-list li a {
-            padding: 1rem 1.2rem
-        }*/
     #restaurants-list li h3 {
         font-size: 1.2em;
     }
