@@ -75,16 +75,16 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
     top: 0;
 }
 /* ====================== Navigation ====================== */
-nav {
+nav[aria-label="Main navigation"] {
     width: 100%;
     background-color: #252831;
     text-align:center;
     padding: 0.5em 0 1em;
 }
-nav h1 {
+nav[aria-label="Main navigation"] h1 {
     margin: auto;
 }
-nav h1 a {
+nav[aria-label="Main navigation"] h1 a {
     color: #fff;
     font-size: 1.2rem;
     font-weight: 200;
@@ -113,7 +113,7 @@ nav h1 a {
 }
 
 /* Add a color to all links inside the list */
-#breadcrumb li a {
+#breadcrumb li a#home-link {
     color: #0275d8;
     text-decoration: none;
     padding: 1rem 0 1.2rem 2.6rem;
@@ -123,6 +123,10 @@ nav h1 a {
 #breadcrumb li a:hover {
     color: #01447e;
     text-decoration: underline;
+}
+#breadcrumb li a[aria-current="page"] {
+    color: #333;
+    padding: 0;
 }
 /* ====================== Map ====================== */
 #map {
@@ -302,7 +306,7 @@ nav h1 a {
     font-size: 0.9rem;
 }
 @media screen and (max-width: 633px)  {
-    nav h1 a {
+    nav[aria-label="Main navigation"] h1 a {
         font-size: 1rem;
     }
     .filter-options label {

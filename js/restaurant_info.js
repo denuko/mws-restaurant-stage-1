@@ -62,7 +62,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     // assign srcset attribute for medium picture source (medium screens)
     const restaurantImgMedium = document.getElementById('restaurant-img-medium');
     restaurantImgMedium.srcset = imagesResized.medium;
-    
+
     // assign srcset attribute for large picture source (medium screens)
     const restaurantImgMediumLarge = document.getElementById('restaurant-img-medium-large');
     restaurantImgMediumLarge.srcset = imagesResized.large;
@@ -114,7 +114,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     const container = document.getElementById('reviews-container');
     container.setAttribute('aria-labelledby', 'reviews-heading');
-    
+
     const title = document.createElement('h3');
     title.innerHTML = 'Reviews';
     title.id = 'reviews-heading';
@@ -164,9 +164,15 @@ createReviewHTML = (review) => {
  */
 fillBreadcrumb = (restaurant = self.restaurant) => {
     const breadcrumb = document.getElementById('breadcrumb');
+
     const li = document.createElement('li');
-    li.innerHTML = restaurant.name;
     breadcrumb.appendChild(li);
+
+    const a = document.createElement('a');
+    a.href = '#';
+    a.innerHTML = restaurant.name;
+    a.setAttribute('aria-current', 'page');
+    li.appendChild(a);
 }
 
 /**
