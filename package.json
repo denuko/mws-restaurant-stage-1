@@ -1,13 +1,28 @@
 {
   "name": "mws-restaurant-stage-1",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "---\r #### _Three Stage Course Material Project - Restaurant Reviews_",
+  "main": "gulpfile.js",
+  "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-clean": "^1.1.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-mkdir": "^1.0.0"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^7.0.1",
+    "gulp-sourcemaps": "^2.6.4"
   },
-  "dependencies": {
-    "grunt-responsive-images": "^1.10.1"
-  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://dkasidiaraki@gmail.com@github.com/denuko/mws-restaurant-stage-1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/denuko/mws-restaurant-stage-1/issues"
+  },
+  "homepage": "https://github.com/denuko/mws-restaurant-stage-1#readme"
 }
