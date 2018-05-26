@@ -6,7 +6,7 @@
 /**
  * Create source element and append it to picture element.
  */
-addImageSourceToPicture = (picture, media, srcset) => {
+const addImageSourceToPicture = (picture, media, srcset) => {
     const source = document.createElement('source');
     source.media = media;
     source.srcset = srcset;
@@ -16,27 +16,27 @@ addImageSourceToPicture = (picture, media, srcset) => {
 /**
  * Extract extension from filename.
  */
-fileExtension = (filename) => {
+const fileExtension = (filename) => {
     return filename.split('.').pop();
 };
 
 /**
  * Get filename without extension.
  */
-filenameWithoutExtension = (filename) => {
+const filenameWithoutExtension = (filename) => {
     return filename.replace(/.[^.]+$/, '');
 };
 
 /**
  * Get all possible names of an image depending on its size (small, medium, large).
  */
-imageNamesBySize = (imageFilename) => {
+const imageNamesBySize = (imageFilename) => {
     const imageΕxtension = fileExtension(imageFilename);
-    const imageΝame = filenameWithoutExtension(imageFilename);
+    const image�?ame = filenameWithoutExtension(imageFilename);
     const filenames = {};
-    filenames.small = `${imageΝame}-small.${imageΕxtension}`;
-    filenames.medium = `${imageΝame}-medium.${imageΕxtension}`;
-    filenames.large = `${imageΝame}-large.${imageΕxtension}`;
+    filenames.small = `${image�?ame}-small.${imageΕxtension}`;
+    filenames.medium = `${image�?ame}-medium.${imageΕxtension}`;
+    filenames.large = `${image�?ame}-large.${imageΕxtension}`;
 
     return filenames;
 };
