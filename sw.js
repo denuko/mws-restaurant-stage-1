@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mws-restaurant-v2';
+const CACHE_NAME = 'mws-restaurant-v3';
 // 
 // Create  a seperate cache for images, because 
 // the idea is to let them live between versions of the app
@@ -8,13 +8,15 @@ const CACHE_IMG_NAME = 'mws-restaurant-img';
 const CACHE_STATIC_FILES = [
     '/',
     '/restaurant.html',
-    '/data/restaurants.json',
-    '/js/dbhelper.js',
-    '/js/helper.js',
-    '/js/picturefill.js',
-    '/js/restaurant_info.js',
-    '/js/main.js',
-    '/js/sw/index.js',
+    '/dist/js/dbhelper.js',
+    '/dist/js/helper.js',
+    '/dist/js/restaurant_info.js',
+    '/dist/js/main.js',
+    '/dist/js/sw/index.js',
+    '/dist/polyfills/append.js',
+    '/dist/polyfills/fetch.js',
+    '/dist/polyfills/picturefill.js',
+    '/dist/polyfills/polyfill.min.js',
     '/css/styles.css'
 ];
 
@@ -31,20 +33,7 @@ self.addEventListener('install', event => event.waitUntil(
             // either from the cache or from the network and cache them
             // before the service worker takes over
             caches.open(CACHE_NAME)
-            .then(cache =>
-                cache.addAll([
-                    '/',
-                    '/restaurant.html',
-                    '/data/restaurants.json',
-                    '/js/dbhelper.js',
-                    '/js/helper.js',
-                    '/js/picturefill.js',
-                    '/js/restaurant_info.js',
-                    '/js/main.js',
-                    '/js/sw/index.js',
-                    '/css/styles.css'
-                ])
-            )
+            .then(cache => cache.addAll(CACHE_STATIC_FILES))
             .catch(error => console.log(error))
             )
 );
