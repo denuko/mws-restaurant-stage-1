@@ -55,26 +55,50 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
     const address = document.getElementById('restaurant-address');
     address.innerHTML = restaurant.address;
 
-    const imageFilename = DBHelper.imageUrlForRestaurant(restaurant);
-    // get all possible names of an image depending on its size (small, medium, large)
-    const imagesResized = imageNamesBySize(imageFilename);
-
-    // assign srcset attribute for medium picture source (medium screens)
-    const restaurantImgMedium = document.getElementById('restaurant-img-medium');
-    restaurantImgMedium.srcset = imagesResized.medium;
-
-    // assign srcset attribute for large picture source (medium screens)
-    const restaurantImgMediumLarge = document.getElementById('restaurant-img-medium-large');
-    restaurantImgMediumLarge.srcset = imagesResized.large;
-
-    // assign srcset attribute for large picture source (large screens)
-    const restaurantImgLarge = document.getElementById('restaurant-img-large');
-    restaurantImgLarge.srcset = `${imagesResized.medium} 1x, ${imagesResized.large} 2x`;
-
     const image = document.getElementById('restaurant-img');
-    image.className = 'restaurant-img'
-    image.src = imagesResized.small;   // small image by default
+    image.className = 'restaurant-img';
     image.alt = restaurant.name;
+
+    const imageFilename = DBHelper.imageUrlForRestaurant(restaurant);
+    if (imageFilename == 'noimg') {
+        const restaurantImgSourcesPicture = document.getElementById('restaurant-img-sources');
+        // Remove sources and image from picture to add the noimg sources
+        while (restaurantImgSourcesPicture.firstChild) {
+            restaurantImgSourcesPicture.removeChild(restaurantImgSourcesPicture.firstChild);
+        }
+
+        // If restaurant has not an image, display a no image svg
+        // and use its corresponding png as a fallback.
+        // Author of the noimg.svg and noimg.png is credited at page's footer.
+        const noImgFallback = `${imageFilename}.png`;
+        addImageSourceToPicture(restaurantImgSourcesPicture, `${imageFilename}.svg`);
+        addImageSourceToPicture(restaurantImgSourcesPicture, noImgFallback);
+
+        image.src = noImgFallback;
+        image.className += ' noimg';
+        
+        restaurantImgSourcesPicture.append(image);
+        // TODO: Fix noimg svg responsive height
+        // TODO: Fix noimg png fallback in IE
+        // TODO: Cache noimg svg and png
+    } else {
+        // get all possible names of an image depending on its size (small, medium, large)
+        const imagesResized = imageNamesBySize(imageFilename);
+
+        // assign srcset attribute for medium picture source (medium screens)
+        const restaurantImgMedium = document.getElementById('restaurant-img-medium');
+        restaurantImgMedium.srcset = imagesResized.medium;
+
+        // assign srcset attribute for large picture source (medium screens)
+        const restaurantImgMediumLarge = document.getElementById('restaurant-img-medium-large');
+        restaurantImgMediumLarge.srcset = imagesResized.large;
+
+        // assign srcset attribute for large picture source (large screens)
+        const restaurantImgLarge = document.getElementById('restaurant-img-large');
+        restaurantImgLarge.srcset = `${imagesResized.medium} 1x, ${imagesResized.large} 2x`;
+
+        image.src = imagesResized.small;   // small image by default
+    }
 
     const cuisine = document.getElementById('restaurant-cuisine');
     cuisine.innerHTML = restaurant.cuisine_type;

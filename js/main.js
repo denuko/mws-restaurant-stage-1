@@ -138,25 +138,41 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 const createRestaurantHTML = (restaurant) => {
     const li = document.createElement('li');
 
-    const imageFilename = DBHelper.imageUrlForRestaurant(restaurant);
-    // get all possible names of an image depending on its size (small, medium, large)
-    const imagesResized = imageNamesBySize(imageFilename);
-
     // create picture element for restaurant image in restaurant list
     const picture = document.createElement('picture');
-    // add source to picture element for medium screens
-    addImageSourceToPicture(picture, '(min-width: 363px) and (max-width:479px)', imagesResized.medium);
-
     const image = document.createElement('img');
     image.className = 'restaurant-img';
-    image.src = imagesResized.small;   // small image by default
     image.alt = restaurant.name;
+    
+    const imageFilename = DBHelper.imageUrlForRestaurant(restaurant);
+    if (imageFilename == 'noimg') {
+        // If restaurant has not an image, display a no image svg
+        // and use its corresponding png as a fallback.
+        // Author of the noimg.svg and noimg.png is credited at page's footer.
+        const noImgFallback = `${imageFilename}.png`;
+        addImageSourceToPicture(picture, `${imageFilename}.svg`);
+        addImageSourceToPicture(picture, noImgFallback);
+
+        image.src = noImgFallback;
+        image.className += ' noimg';
+        // TODO: Fix noimg svg responsive height
+        // TODO: Fix noimg png fallback in IE
+        // TODO: Cache noimg svg and png
+    } else {
+        // get all possible names of an image depending on its size (small, medium, large)
+        const imagesResized = imageNamesBySize(imageFilename);
+        // add source to picture element for medium screens
+        addImageSourceToPicture(picture, imagesResized.medium, '(min-width: 363px) and (max-width:479px)');
+
+        image.src = imagesResized.small;   // small image by default
+    }
+
     picture.append(image);
     li.append(picture);
 
     const name = document.createElement('h3');
     li.append(name);
-    
+
     const more = document.createElement('a');
     more.href = DBHelper.urlForRestaurant(restaurant);
     more.innerHTML = restaurant.name;

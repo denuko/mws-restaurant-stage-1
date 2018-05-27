@@ -204,6 +204,9 @@ nav[aria-label="Main navigation"] h1 a {
     max-width: 100%;
     min-height: 248px;
 }
+#restaurants-list .restaurant-img.noimg {
+    background-color: transparent;
+}
 #restaurants-list li h3 {
     color: #f18200;
     font-family: Arial,sans-serif;
@@ -251,6 +254,9 @@ nav[aria-label="Main navigation"] h1 a {
 }
 #restaurant-img {
     width: 100%;
+}
+#restaurant-img.noimg {
+    background: #fff;
 }
 #restaurant-address {
     font-size: 1rem;

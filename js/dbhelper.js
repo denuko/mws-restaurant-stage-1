@@ -145,7 +145,14 @@ class DBHelper {
      * Restaurant image URL.
      */
     static imageUrlForRestaurant(restaurant) {
-        return (`/img/${restaurant.photograph}`);
+        // Check if restaurant object has a photograph
+        if ('photograph' in restaurant) {
+            return (`/img/${restaurant.photograph}`);
+        } else {
+            // If restaurant has not a photograph return 'noimg' so that the
+            // rest of the code knows what to do
+            return 'noimg';
+        }
     }
 
     /**

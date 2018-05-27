@@ -8,7 +8,9 @@
  */
 const addImageSourceToPicture = (picture, media, srcset) => {
     const source = document.createElement('source');
-    source.media = media;
+    if (media !== undefined) {
+        source.media = media;
+    }
     source.srcset = srcset;
     picture.append(source);
 };
