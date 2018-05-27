@@ -31,12 +31,11 @@ const filenameWithoutExtension = (filename) => {
  * Get all possible names of an image depending on its size (small, medium, large).
  */
 const imageNamesBySize = (imageFilename) => {
-    const imageExtension = fileExtension(imageFilename);
-    const imageName = filenameWithoutExtension(imageFilename);
+    const imageExtension = 'jpg';
     const filenames = {};
-    filenames.small = `${imageName}-small.${imageExtension}`;
-    filenames.medium = `${imageName}-medium.${imageExtension}`;
-    filenames.large = `${imageName}-large.${imageExtension}`;
+    filenames.small = `${imageFilename}-small.${imageExtension}`;
+    filenames.medium = `${imageFilename}-medium.${imageExtension}`;
+    filenames.large = `${imageFilename}-large.${imageExtension}`;
 
     return filenames;
 };
