@@ -19,21 +19,20 @@ const CACHE_STATIC_FILES = [
 ];
 
 // Accept a message that tells service worker to take over (skip waiting)
-self.addEventListener('message', function(event) {
+self.addEventListener('message', event => {
     if (event.data.action === 'skipWaiting') {
         self.skipWaiting();
     }
 });
 
 // Install service worker
-self.addEventListener('install', (event) => {
-    event.waitUntil(
+self.addEventListener('install', event => event.waitUntil(
             // Open cache in the install event to get everything we need
             // either from the cache or from the network and cache them
             // before the service worker takes over
             caches.open(CACHE_NAME)
-            .then((cache) => {
-                return cache.addAll([
+            .then(cache =>
+                cache.addAll([
                     '/',
                     '/restaurant.html',
                     '/data/restaurants.json',
@@ -44,27 +43,23 @@ self.addEventListener('install', (event) => {
                     '/js/main.js',
                     '/js/sw/index.js',
                     '/css/styles.css'
-                ]);
-            })
-            .catch(function(error) {
-                console.log(error);
-            })
-            );
-});
+                ])
+            )
+            .catch(error => console.log(error))
+            )
+);
 
 // Activate service worker
-self.addEventListener('activate', (event) => {
-    console.log('Activate service worker');
-    event.waitUntil(
+self.addEventListener('activate', event => event.waitUntil(
             caches.keys().then(
             cacheNames => Promise.all(
                         cacheNames.filter(cacheName => cacheName.startsWith('mws-restaurant-v') && cacheName != CACHE_NAME)
                         .map(cacheName => caches.delete(cacheName))
-                        )));
-});
+                        )))
+);
 
 // Intercept the requests made to the server
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', event => {
     const requestUrl = new URL(event.request.url);
     if (requestUrl.origin === location.origin) {
         // Cache images
@@ -84,17 +79,16 @@ self.addEventListener('fetch', (event) => {
 /**
  * Check if static files exist in the cache, else fetch them from network
  */
-serveStaticFiles = (request) => {
+serveStaticFiles = request =>
     // Open the cache and match the request with the ones present in the cache
-    return caches.open(CACHE_NAME).then((cache) => {
-        return cache.match(request.url).then((response) => {
+    caches.open(CACHE_NAME).then(cache => cache.match(request.url).then(response => {
             // Check if response found in cache
             if (response)
                 return response;
 
             // If the request doesn’t match, redirect the request to the server
             // and return a fetch to the network for the original request
-            return fetch(request).then((networkResponse) => {
+            return fetch(request).then(networkResponse => {
                 if (!networkResponse.ok) {
                     throw Error(networkResponse.statusText);
                 }
@@ -105,30 +99,27 @@ serveStaticFiles = (request) => {
 
                 // Return network response
                 return networkResponse;
-            }).catch(function(error) {
-                console.log('Caching files error: \n', error);
-            });
-        });
-    });
-}
+            }).catch(error => console.log('Caching files error: \n', error));
+        })
+    );
+
 
 /**
  * Check if images exist in the cache, else fetch them from network
  */
-serveImage = (request) => {
+serveImage = request => {
     // Cache images without the size suffix to return from the cache, even when 
     // the browser requests a different size of the same image
     const storageUrl = request.url.replace(/-(large|medium|small)\.jpg$/, '');
 
     // Open the cache and match the request with the ones present in the cache
-    return caches.open(CACHE_IMG_NAME).then((cache) => {
-        return cache.match(storageUrl).then((response) => {
+    return caches.open(CACHE_IMG_NAME).then(cache => cache.match(storageUrl).then(response => {
             if (response)
                 return response;
 
             // If the request doesn’t match, redirect the request to the server
             // and return a fetch to the network for the original request
-            return fetch(request).then((networkResponse) => {
+            return fetch(request).then(networkResponse => {
                 if (!networkResponse.ok) {
                     throw Error(networkResponse.statusText);
                 }
@@ -140,6 +131,6 @@ serveImage = (request) => {
                 // Return network response
                 return networkResponse;
             });
-        });
-    });
+        })
+    );
 };
