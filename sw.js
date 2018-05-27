@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mws-restaurant-v1';
+const CACHE_NAME = 'mws-restaurant-v2';
 // 
 // Create  a seperate cache for images, because 
 // the idea is to let them live between versions of the app
@@ -55,6 +55,12 @@ self.addEventListener('install', (event) => {
 // Activate service worker
 self.addEventListener('activate', (event) => {
     console.log('Activate service worker');
+    event.waitUntil(
+            caches.keys().then(
+            cacheNames => Promise.all(
+                        cacheNames.filter(cacheName => cacheName.startsWith('mws-restaurant-v') && cacheName != CACHE_NAME)
+                        .map(cacheName => caches.delete(cacheName))
+                        )));
 });
 
 // Intercept the requests made to the server
