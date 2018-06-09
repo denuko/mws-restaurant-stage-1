@@ -127,6 +127,9 @@ const resetRestaurants = (restaurants) => {
 const fillRestaurantsHTML = (restaurants = self.restaurants) => {
     const ul = document.getElementById('restaurants-list');
     restaurants.forEach(restaurant => {
+        if (DBHelper.addRestaurants()) {
+            DBHelper.addRestaurantToDatabase(restaurant);
+        }
         ul.append(createRestaurantHTML(restaurant));
     });
     addMarkersToMap();
@@ -143,7 +146,7 @@ const createRestaurantHTML = (restaurant) => {
     const image = document.createElement('img');
     image.className = 'restaurant-img';
     image.alt = restaurant.name;
-    
+
     const imageFilename = DBHelper.imageUrlForRestaurant(restaurant);
     if (imageFilename == 'noimg') {
         // If restaurant has not an image, display a no image svg

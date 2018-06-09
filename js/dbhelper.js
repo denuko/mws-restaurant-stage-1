@@ -4,6 +4,15 @@
 class DBHelper {
 
     /**
+     * Database Promise.
+     * Returns the constant defined after the DBHelper class 
+     * with the opened database.
+     */
+    static get DATABASE_PROMISE() {
+        return DATABASE_PROMISE;
+    }
+
+    /**
      * Database URL.
      * Change this to restaurants.json file location on your server.
      */
@@ -13,34 +22,77 @@ class DBHelper {
     }
 
     /**
+     * Call the variable defined after the DBHelper class which is a bool
+     * that indicates whether to store a restaurant into database
+     * before adding its html.
+     */
+    static addRestaurants() {
+        return addRestaurants;
+    }
+
+    static openDatabase() {
+        // If the browser doesn't support service worker,
+        // we don't care about having a database
+        if (!navigator.serviceWorker) {
+            return Promise.resolve();
+        }
+
+        return  idb.open('restaurants-db', 1, upgradeDb => {
+            switch (upgradeDb.oldVersion) {
+                case 0:
+                    upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
+                    const restaurantsStore = upgradeDb.transaction.objectStore('restaurants');
+                    restaurantsStore.createIndex('id', 'id');
+            }
+        });
+    }
+
+    /**
      * Fetch all restaurants.
      */
     static fetchRestaurants(callback) {
         fetch(DBHelper.DATABASE_URL)
                 .then(response => response.json())
-                .then(restaurants => {
-                    callback(null, restaurants);
-                })
-                .catch((error) => {
-                    callback(error, null);
-                });
+                .then(restaurants => callback(null, restaurants))
+                .catch(error => callback(error, null));
     }
 
     /**
      * Fetch a restaurant by its ID.
      */
     static fetchRestaurantById(id, callback) {
-        // fetch all restaurants with proper error handling.
-        DBHelper.fetchRestaurants((error, restaurants) => {
-            if (error) {
-                callback(error, null);
+        DBHelper.DATABASE_PROMISE.then(db => {
+            const tx = db.transaction('restaurants');
+
+            return tx.objectStore('restaurants').index('id').openCursor();
+        }).then(function checkIfRestaurantFound(cursor) {
+            if (!cursor)
+                return;
+            if (cursor.value.id == id) {
+                callback(null, cursor.value);
+
+                return cursor.value;
             } else {
-                const restaurant = restaurants.find(r => r.id == id);
-                if (restaurant) { // Got the restaurant
-                    callback(null, restaurant);
-                } else { // Restaurant does not exist in the database
-                    callback('Restaurant does not exist', null);
-                }
+                return cursor.continue().then(checkIfRestaurantFound);
+            }
+        }).then(restaurant => {
+            if (restaurant) {
+                callback(null, restaurant);
+            } else {
+                // fetch all restaurants with proper error handling.
+                DBHelper.fetchRestaurants((error, restaurants) => {
+                    if (error) {
+                        callback(error, null);
+                    } else {
+                        const restaurant = restaurants.find(r => r.id == id);
+                        if (restaurant) { // Got the restaurant
+                            callback(null, restaurant);
+                            DBHelper.addRestaurantToDatabase(restaurant);
+                        } else { // Restaurant does not exist in the database
+                            callback('Restaurant does not exist', null);
+                        }
+                    }
+                });
             }
         });
     }
@@ -81,21 +133,39 @@ class DBHelper {
      * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
      */
     static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
-        // Fetch all restaurants
-        DBHelper.fetchRestaurants((error, restaurants) => {
-            if (error) {
-                callback(error, null);
+        DBHelper.DATABASE_PROMISE.then(db => {
+            const tx = db.transaction('restaurants');
+            const restaurantsStore = tx.objectStore('restaurants');
+
+            return tx.objectStore('restaurants').getAll();
+        }).then(restaurants => {
+            if (!restaurants.length) {
+                addRestaurants = true;
+                // Fetch all restaurants
+                DBHelper.fetchRestaurants((error, restaurants) => {
+                    if (error) {
+                        callback(error, null);
+                    } else {
+                        DBHelper.viewRestaurants(restaurants, cuisine, neighborhood, callback);
+                        addRestaurants = false;
+                    }
+                });
             } else {
-                let results = restaurants
-                if (cuisine != 'all') { // filter by cuisine
-                    results = results.filter(r => r.cuisine_type == cuisine);
-                }
-                if (neighborhood != 'all') { // filter by neighborhood
-                    results = results.filter(r => r.neighborhood == neighborhood);
-                }
-                callback(null, results);
+                console.log('Restaurants:', restaurants);
+                DBHelper.viewRestaurants(restaurants, cuisine, neighborhood, callback);
             }
-        });
+        }).catch(error => callback(error, null));
+    }
+
+    static viewRestaurants(restaurants, cuisine, neighborhood, callback) {
+        let results = restaurants
+        if (cuisine != 'all') { // filter by cuisine
+            results = results.filter(r => r.cuisine_type == cuisine);
+        }
+        if (neighborhood != 'all') { // filter by neighborhood
+            results = results.filter(r => r.neighborhood == neighborhood);
+        }
+        callback(null, results);
     }
 
     /**
@@ -169,4 +239,21 @@ class DBHelper {
         return marker;
     }
 
+    /**
+     * Add restaurant to database.
+     */
+    static addRestaurantToDatabase(restaurant) {
+        DBHelper.DATABASE_PROMISE.then(function(db) {
+            var tx = db.transaction('restaurants', 'readwrite');
+            var restaurantsStore = tx.objectStore('restaurants');
+            restaurantsStore.put(restaurant);
+
+            return tx.complete;
+        }).then(function() {
+            console.log('Restaurant added');
+        });
+    }
 }
+
+const DATABASE_PROMISE = DBHelper.openDatabase();
+let addRestaurants = false;
