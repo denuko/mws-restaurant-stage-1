@@ -69,8 +69,6 @@ class DBHelper {
             if (!cursor)
                 return;
             if (cursor.value.id == id) {
-                callback(null, cursor.value);
-
                 return cursor.value;
             } else {
                 return cursor.continue().then(checkIfRestaurantFound);
