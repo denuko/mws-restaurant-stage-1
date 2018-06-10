@@ -41,3 +41,15 @@ const imageNamesBySize = (imageFilename) => {
 
     return filenames;
 };
+
+/**
+ * Include google maps api on the fly.
+ */
+const getGoogleMapsApi = () => {
+    const js_file = document.createElement('script');
+    js_file.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBzXDGrWxj1GsJUbo9ZKSJPz07o2K1ljgc&libraries=places&callback=initMap';
+    document.body.appendChild(js_file);
+   
+    // Remove maps api script tag, to include it again on the fly when needed.
+    js_file.remove();
+};

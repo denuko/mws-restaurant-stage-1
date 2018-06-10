@@ -5,9 +5,10 @@ var map
 var markers = []
 
 /**
- * Fetch neighborhoods and cuisines as soon as the page is loaded.
+ * Fetch restaurants as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
+    updateRestaurants();
 });
 
 /**
@@ -50,7 +51,9 @@ window.initMap = () => {
         center: loc,
         scrollwheel: false
     });
-    updateRestaurants();
+
+    // Add markers to the map after being initialized
+    addMarkersToMap();
 }
 
 /**
@@ -72,6 +75,9 @@ const updateRestaurants = () => {
         } else {
             resetRestaurants(restaurants);
             fillRestaurantsHTML();
+            
+            // Include maps api dynamically only after everything else has been done
+            getGoogleMapsApi();
         }
     })
 }
@@ -113,7 +119,6 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 
     fillNeighborhoodsHTML();
     fillCuisinesHTML();
-    addMarkersToMap();
 }
 
 /**

@@ -1,23 +1,32 @@
 let restaurant;
 var map;
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    fetchRestaurantFromURL(error => {
+        if (error) { // Got an error!
+            console.error(error);
+        } else {
+            fillRestaurantHTML();
+            fillBreadcrumb();
+            
+            // Include maps api dynamically only after everything else has been done
+            getGoogleMapsApi();
+        }
+    });
+});
+
 /**
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-    fetchRestaurantFromURL((error, restaurant) => {
-        if (error) { // Got an error!
-            console.error(error);
-        } else {
-            self.map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 16,
-                center: restaurant.latlng,
-                scrollwheel: false
-            });
-            fillBreadcrumb();
-            DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-        }
+    self.map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: self.restaurant.latlng,
+        scrollwheel: false
     });
+
+    // Add markers to the map after being initialized
+    DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
 }
 
 /**
@@ -25,13 +34,13 @@ window.initMap = () => {
  */
 const fetchRestaurantFromURL = (callback) => {
     if (self.restaurant) { // restaurant already fetched!
-        callback(null, self.restaurant)
+        callback(null);
         return;
     }
     const id = getParameterByName('id');
     if (!id) { // no id found in URL
         error = 'No restaurant id in URL'
-        callback(error, null);
+        callback(error);
     } else {
         DBHelper.fetchRestaurantById(id, (error, restaurant) => {
             self.restaurant = restaurant;
@@ -39,8 +48,8 @@ const fetchRestaurantFromURL = (callback) => {
                 console.error(error);
                 return;
             }
-            fillRestaurantHTML();
-            callback(null, restaurant)
+
+            callback(null);
         });
     }
 }
@@ -67,22 +76,22 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
             restaurantImgSourcesPicture.removeChild(restaurantImgSourcesPicture.firstChild);
         }
 
-        // If restaurant has not an image, display a no image svg
-        // and use its corresponding png as a fallback.
-        // Author of the noimg.svg and noimg.png is credited at page's footer.
+// If restaurant has not an image, display a no image svg
+// and use its corresponding png as a fallback.
+// Author of the noimg.svg and noimg.png is credited at page's footer.
         const noImgFallback = `${imageFilename}.png`;
         addImageSourceToPicture(restaurantImgSourcesPicture, `${imageFilename}.svg`);
         addImageSourceToPicture(restaurantImgSourcesPicture, noImgFallback);
 
         image.src = noImgFallback;
         image.className += ' noimg';
-        
+
         restaurantImgSourcesPicture.append(image);
         // TODO: Fix noimg svg responsive height
         // TODO: Fix noimg png fallback in IE
         // TODO: Cache noimg svg and png
     } else {
-        // get all possible names of an image depending on its size (small, medium, large)
+// get all possible names of an image depending on its size (small, medium, large)
         const imagesResized = imageNamesBySize(imageFilename);
 
         // assign srcset attribute for medium picture source (medium screens)
@@ -108,7 +117,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
     if (restaurant.operating_hours) {
         fillRestaurantHoursHTML();
     }
-    // fill reviews
+// fill reviews
     fillReviewsHTML();
 }
 
