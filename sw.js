@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mws-restaurant-v4';
+const CACHE_NAME = 'mws-restaurant-v5';
 // 
 // Create  a seperate cache for images, because 
 // the idea is to let them live between versions of the app
@@ -14,10 +14,12 @@ const CACHE_STATIC_FILES = [
     '/dist/js/main.js',
     '/dist/js/sw/index.js',
     '/dist/idb/idb.js',
+    '/dist/loadjs.min.js',
     '/dist/polyfills/append.js',
     '/dist/polyfills/fetch.js',
     '/dist/polyfills/picturefill.js',
     '/dist/polyfills/polyfill.min.js',
+    '/dist/polyfills/intersection-observer.js',
     '/css/styles.css'
 ];
 

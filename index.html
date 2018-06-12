@@ -17,10 +17,6 @@
         </header>
 
         <main id="maincontent">
-            <section id="map-container" role="application" aria-labelledby="map-heading">
-                <h2 id="map-heading" hidden>Restaurants on google map</h2>
-                <div id="map"></div>
-            </section>
             <section id="filter-container" role="search" aria-labelledby="filter-heading">
                 <h2 id="filter-heading" hidden>Filter Restaurants</h2>
                 <div class="filter-options">
@@ -44,8 +40,15 @@
                 <h2 id="restaurants-heading" hidden>Restaurants List</h2>
                 <ul id="restaurants-list"></ul>
             </section>
+            <section id="map-container" role="application" aria-labelledby="map-heading">
+                <h2 id="map-heading" hidden>Restaurants on google map</h2>
+                <div id="map"></div>
+            </section>
         </main>
 
+        <script type="application/javascript" charset="utf-8" src="dist/js/sw/index.js"></script>
+        <!-- muicss script to load JS files on demand -->
+        <script src="dist/loadjs.min.js"></script>
         <script src="dist/idb/idb.js"></script>
         <!-- Picturefill polyfill -->
         <script src="dist/polyfills/picturefill.js"></script>
@@ -55,17 +58,17 @@
         <script src="dist/polyfills/polyfill.min.js"></script>
         <!-- Append polyfill -->
         <script src="dist/polyfills/append.js"></script>
+        <!-- IntersectionObserver polyfill -->
+        <script src="dist/polyfills/intersection-observer.js"></script>
         <script type="application/javascript" charset="utf-8" src="dist/js/dbhelper.js"></script>
         <script type="application/javascript" charset="utf-8" src="dist/js/helper.js"></script>
         <script type="application/javascript" charset="utf-8" src="dist/js/main.js"></script>
-        <script type="application/javascript" charset="utf-8" src="dist/js/sw/index.js"></script>
 
         <footer id="footer">
             Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
             <!-- Credit to noimg.svg and noimg.png author -->
             <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
         </footer>
-
     </body>
 
 </html>

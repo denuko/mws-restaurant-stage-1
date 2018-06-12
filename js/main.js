@@ -75,7 +75,7 @@ const updateRestaurants = () => {
         } else {
             resetRestaurants(restaurants);
             fillRestaurantsHTML();
-            
+
             // Include maps api dynamically only after everything else has been done
             getGoogleMapsApi();
         }

@@ -92,7 +92,7 @@ nav[aria-label="Main navigation"] h1 a {
     text-transform: uppercase;
 }
 #breadcrumb {
-    padding: 1rem;
+    padding: 1rem 0;
     list-style: none;
     background-color: #eee;
     font-size: 1rem;
@@ -135,13 +135,8 @@ nav[aria-label="Main navigation"] h1 a {
     background-color: #ccc;
 }
 #map-offline {
-    z-index: 0;
     text-align: center;
     padding: 2em 0;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
 }
 #map-offline-message {
     font-weight: 200;
@@ -226,11 +221,12 @@ nav[aria-label="Main navigation"] h1 a {
 }
 
 /* ====================== Restaurant Details ====================== */
-.inside header {
-    position: fixed;
-    top: 0;
+.inside header {    
+    /*TODO: onscroll postion fixed*/
+    /*position: fixed;*/
+/*    top: 0;*/
     width: 100%;
-    z-index: 1000;
+    /*z-index: 1000;*/
 }
 .inside #map-container {
     background: blue none repeat scroll 0 0;

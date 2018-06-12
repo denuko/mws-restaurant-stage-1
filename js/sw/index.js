@@ -49,17 +49,8 @@ if (navigator.serviceWorker) {
     window.addEventListener('load', function() {
         // Detect if page is offline
         if (!navigator.onLine) {
-            // Display a map load failure message
-            const mapOffline = document.createElement('div');
-            mapOffline.id = 'map-offline';
-
-            const mapOfflineMessage = document.createElement('span');
-            mapOfflineMessage.innerHTML = 'No internet connection. Failed to load map.';
-            mapOfflineMessage.id = 'map-offline-message';
-            mapOffline.appendChild(mapOfflineMessage);
-
             const map = document.getElementById('map');
-            map.append(mapOffline);
+            map.className = 'offline';
         }
     });
 } else {

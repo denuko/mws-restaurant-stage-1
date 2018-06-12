@@ -31,13 +31,6 @@
         <!-- End header -->
         <!-- Beginning main -->
         <main id="maincontent">
-            <!-- Beginning map -->
-
-            <section id="map-container" role="application" aria-labelledby="map-heading">
-                <h2 id="map-heading" hidden>Restaurant on google map</h2>
-                <div id="map"></div>
-            </section>
-            <!-- End map -->
             <!-- Beginning restaurant -->
             <section id="restaurant-container" tabindex="-1" aria-labelledby="restaurant-name">
                 <h2 id="restaurant-name" tabindex="0"></h2>
@@ -60,6 +53,12 @@
                 <ul id="reviews-list"></ul>
             </section>
             <!-- End reviews -->
+            <!-- Beginning map -->
+            <section id="map-container" role="application" aria-labelledby="map-heading">
+                <h2 id="map-heading" hidden>Restaurant on google map</h2>
+                <div id="map"></div>
+            </section>
+            <!-- End map -->
         </main>
         <!-- End main -->
 
@@ -72,6 +71,8 @@
         <!-- End footer -->
 
         <!-- Beginning scripts -->
+        <!-- muicss script to load JS files on demand -->
+        <script src="dist/loadjs.min.js"></script>
         <script src="dist/idb/idb.js"></script>
         <!-- Picturefill polyfill -->
         <script src="dist/polyfills/picturefill.js"></script>
@@ -81,6 +82,8 @@
         <script src="dist/polyfills/polyfill.min.js"></script>
         <!-- Append polyfill -->
         <script src="dist/polyfills/append.js"></script>
+        <!-- IntersectionObserver polyfill -->
+        <script src="dist/polyfills/intersection-observer.js"></script>
         <!-- Database helpers -->
         <script type="text/javascript" src="dist/js/dbhelper.js"></script>
         <!-- Helper javascript file -->
