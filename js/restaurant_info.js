@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         } else {
             fillRestaurantHTML();
             fillBreadcrumb();
-            
+
             // Include maps api dynamically only after everything else has been done
             getGoogleMapsApi();
         }
@@ -87,9 +87,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
         image.className += ' noimg';
 
         restaurantImgSourcesPicture.append(image);
-        // TODO: Fix noimg svg responsive height
         // TODO: Fix noimg png fallback in IE
-        // TODO: Cache noimg svg and png
     } else {
 // get all possible names of an image depending on its size (small, medium, large)
         const imagesResized = imageNamesBySize(imageFilename);

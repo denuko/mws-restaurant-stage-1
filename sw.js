@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mws-restaurant-v5';
+const CACHE_NAME = 'mws-restaurant-v6';
 // 
 // Create  a seperate cache for images, because 
 // the idea is to let them live between versions of the app
@@ -20,7 +20,9 @@ const CACHE_STATIC_FILES = [
     '/dist/polyfills/picturefill.js',
     '/dist/polyfills/polyfill.min.js',
     '/dist/polyfills/intersection-observer.js',
-    '/css/styles.css'
+    '/css/styles.css',
+    '/noimg.png',
+    '/noimg.svg'
 ];
 
 // Accept a message that tells service worker to take over (skip waiting)

@@ -144,9 +144,7 @@ const createRestaurantHTML = (restaurant) => {
 
         image.src = noImgFallback;
         image.className += ' noimg';
-        // TODO: Fix noimg svg responsive height
         // TODO: Fix noimg png fallback in IE
-        // TODO: Cache noimg svg and png
     } else {
         // get all possible names of an image depending on its size (small, medium, large)
         const imagesResized = imageNamesBySize(imageFilename);
