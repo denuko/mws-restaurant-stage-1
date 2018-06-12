@@ -6,7 +6,7 @@
 /**
  * Create source element and append it to picture element.
  */
-const addImageSourceToPicture = (picture, media, srcset) => {
+const addImageSourceToPicture = (picture, srcset, media) => {
     const source = document.createElement('source');
     if (media !== undefined) {
         source.media = media;
