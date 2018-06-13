@@ -23,12 +23,12 @@ ul, li {
     color: #333;
 }
 a {
-    color: orange;
+    color: #006633;
     text-decoration: none;
     padding: 1.2rem;
 }
 a:hover, a:focus {
-    color: #3397db;
+    color: #7a4300;
     text-decoration: none;
 }
 a img {
@@ -51,7 +51,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 }
 #footer {
     background-color: #444;
-    color: #aaa;
+    color: #dedede;
     font-size: 0.6rem;
     letter-spacing: 1px;
     padding: 1.5rem;
@@ -60,6 +60,10 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 }
 #footer a {
     padding: 1.2rem 0;
+    color: #9cf25f;
+}
+#footer a:hover, #footer a:focus { 
+    color: #ffd8ad;
 }
 /* ====================== Accessibility ====================== */
 .skip-link {
@@ -94,7 +98,7 @@ nav[aria-label="Main navigation"] h1 a {
 #breadcrumb {
     padding: 1rem 0;
     list-style: none;
-    background-color: #eee;
+    background-color: #fff;
     font-size: 1rem;
     margin: 0;
     width: 100%;
@@ -114,7 +118,6 @@ nav[aria-label="Main navigation"] h1 a {
 
 /* Add a color to all links inside the list */
 #breadcrumb li a#home-link {
-    color: #0275d8;
     text-decoration: none;
     padding: 1rem 0 1.2rem 2.6rem;
 }
@@ -149,7 +152,7 @@ nav[aria-label="Main navigation"] h1 a {
 }
 .filter-options {
     width: 100%;
-    background-color: #3397DB;
+    background-color: #006633;
     align-items: center;
     padding: 1em 0 0.5em;
 }
@@ -203,7 +206,7 @@ nav[aria-label="Main navigation"] h1 a {
     background-color: transparent;
 }
 #restaurants-list li h3 {
-    color: #f18200;
+    color: #006633;
     font-family: Arial,sans-serif;
     font-size: 1.5em;
     font-weight: 200;
@@ -239,7 +242,7 @@ nav[aria-label="Main navigation"] h1 a {
     max-width: 100%;
 }
 #restaurant-name {
-    color: #f18200;
+    color: #006633;
     font-family: Arial,sans-serif;
     font-size: 1.3rem;
     font-weight: 200;
@@ -277,7 +280,7 @@ nav[aria-label="Main navigation"] h1 a {
     padding: 1.5em 1em;
 }
 #reviews-container h3 {
-    color: #f58500;
+    color: #006633;
     font-size: 1.5em;
     font-weight: 300;
     letter-spacing: -1px;

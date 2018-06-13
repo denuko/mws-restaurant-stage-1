@@ -1,7 +1,7 @@
 {
     "name": "Restaurant Reviews",
     "short_name": "Restaurant Reviews",
-    "theme_color": "#f58500",
+    "theme_color": "#006633",
     "background_color": "#fdfdfd",
     "display": "standalone",
     "Scope": "/",
