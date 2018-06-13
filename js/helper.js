@@ -11,7 +11,7 @@ const addImageSourceToPicture = (picture, srcset, media) => {
     if (media !== undefined) {
         source.media = media;
     }
-    source.srcset = srcset;
+    source.setAttribute('data-srcset', srcset);
     picture.append(source);
 };
 
@@ -94,3 +94,21 @@ const getGoogleMapsApi = () => {
 
     observer.observe(map);
 };
+
+/**
+ * Include LazyLoad plugin: https://www.andreaverlicchi.eu/lazyload/#recipes
+ */
+const getLazyLoadPlugin = () => {
+    // Conditionally load the best version of LazyLoad depending on the browser's support of the IntersectionObserver API. 
+    (function(w, d) {
+        var b = d.getElementsByTagName('body')[0];
+        var s = d.createElement("script");
+        s.async = true;
+        var v = !("IntersectionObserver" in w) ? "8.7.1" : "10.5.2";
+        s.src = "https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/" + v + "/lazyload.min.js";
+        w.lazyLoadOptions = {
+            elements_selector: '.lazy'
+        }; // Your options here. See "recipes" for more information about async.
+        b.appendChild(s);
+    }(window, document));
+}

@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             fillRestaurantHTML();
             fillBreadcrumb();
 
+            // Include LazyLoad plugin
+            getLazyLoadPlugin();
+
             // Include maps api dynamically only after everything else has been done
             getGoogleMapsApi();
         }
@@ -65,7 +68,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
     address.innerHTML = restaurant.address;
 
     const image = document.getElementById('restaurant-img');
-    image.className = 'restaurant-img';
+    image.className = 'restaurant-img lazy';
     image.alt = restaurant.name;
 
     const imageFilename = DBHelper.imageUrlForRestaurant(restaurant);
@@ -83,7 +86,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
         addImageSourceToPicture(restaurantImgSourcesPicture, `${imageFilename}.svg`);
         addImageSourceToPicture(restaurantImgSourcesPicture, noImgFallback);
 
-        image.src = noImgFallback;
+        image.setAttribute('data-src', noImgFallback);
         image.className += ' noimg';
 
         restaurantImgSourcesPicture.append(image);
@@ -94,17 +97,17 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 
         // assign srcset attribute for medium picture source (medium screens)
         const restaurantImgMedium = document.getElementById('restaurant-img-medium');
-        restaurantImgMedium.srcset = imagesResized.medium;
+        restaurantImgMedium.setAttribute('data-srcset', imagesResized.medium);
 
         // assign srcset attribute for large picture source (medium screens)
         const restaurantImgMediumLarge = document.getElementById('restaurant-img-medium-large');
-        restaurantImgMediumLarge.srcset = imagesResized.large;
+        restaurantImgMediumLarge.setAttribute('data-srcset', imagesResized.large);
 
         // assign srcset attribute for large picture source (large screens)
         const restaurantImgLarge = document.getElementById('restaurant-img-large');
-        restaurantImgLarge.srcset = `${imagesResized.medium} 1x, ${imagesResized.large} 2x`;
+        restaurantImgLarge.setAttribute('data-srcset', `${imagesResized.medium} 1x, ${imagesResized.large} 2x`);
 
-        image.src = imagesResized.small;   // small image by default
+        image.setAttribute('data-src', imagesResized.small); // small image by default
     }
 
     const cuisine = document.getElementById('restaurant-cuisine');

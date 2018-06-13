@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mws-restaurant-v6';
+const CACHE_NAME = 'mws-restaurant-v7';
 // 
 // Create  a seperate cache for images, because 
 // the idea is to let them live between versions of the app
@@ -22,7 +22,8 @@ const CACHE_STATIC_FILES = [
     '/dist/polyfills/intersection-observer.js',
     '/css/styles.css',
     '/noimg.png',
-    '/noimg.svg'
+    'https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/8.7.1/lazyload.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/10.5.2/lazyload.min.js'
 ];
 
 // Accept a message that tells service worker to take over (skip waiting)

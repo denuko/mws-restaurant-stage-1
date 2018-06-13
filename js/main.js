@@ -75,7 +75,8 @@ const updateRestaurants = () => {
         } else {
             resetRestaurants(restaurants);
             fillRestaurantsHTML();
-
+            // Include LazyLoad plugin
+            getLazyLoadPlugin();
             // Include maps api dynamically only after everything else has been done
             getGoogleMapsApi();
         }
@@ -130,7 +131,7 @@ const createRestaurantHTML = (restaurant) => {
     // create picture element for restaurant image in restaurant list
     const picture = document.createElement('picture');
     const image = document.createElement('img');
-    image.className = 'restaurant-img';
+    image.className = 'restaurant-img lazy';
     image.alt = restaurant.name;
 
     const imageFilename = DBHelper.imageUrlForRestaurant(restaurant);
@@ -142,7 +143,7 @@ const createRestaurantHTML = (restaurant) => {
         addImageSourceToPicture(picture, `${imageFilename}.svg`);
         addImageSourceToPicture(picture, noImgFallback);
 
-        image.src = noImgFallback;
+        image.setAttribute('data-src', noImgFallback);
         image.className += ' noimg';
         // TODO: Fix noimg png fallback in IE
     } else {
@@ -151,7 +152,7 @@ const createRestaurantHTML = (restaurant) => {
         // add source to picture element for medium screens
         addImageSourceToPicture(picture, imagesResized.medium, '(min-width: 363px) and (max-width:479px)');
 
-        image.src = imagesResized.small;   // small image by default
+        image.setAttribute('data-src', imagesResized.small);
     }
 
     picture.append(image);
