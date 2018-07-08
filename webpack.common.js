@@ -7,7 +7,6 @@ module.exports = {
     entry: {
         main: './src/js/main.js',
         restaurant_info: './src/js/restaurant_info.js',
-        polyfills: './src/js/polyfills.js',
         swindex: './src/js/sw/index.js'
     },
     output: {
@@ -32,7 +31,7 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(['dist'], {
-            exclude: ['img', 'noimg.png', 'noimg.svg', 'loadjs.min.js', 'sw.js', 'manifest.json', 'icon-144x144.png', 'icon-192x192.png', 'icon-512x512.png']
+            exclude: ['polyfills.bundle.js', 'polyfills.bundle.js.map', 'img', 'noimg.png', 'noimg.svg', 'loadjs.min.js', 'sw.js', 'manifest.json', 'icon-144x144.png', 'icon-192x192.png', 'icon-512x512.png']
         }),
         new MiniCssExtractPlugin({
             filename: 'style.bundle.css'
