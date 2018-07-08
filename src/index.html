@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#006633">
+        <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+        <link rel="stylesheet" href="<%=htmlWebpackPlugin.files.chunks.main.css %>">
+        <title>Restaurant Reviews</title>
+        <link rel="manifest" href="manifest.json">
+        <script>
+            var modernBrowser = (
+                    'fetch' in window &&
+                    'assign' in Object
+                    );
+
+            if (!modernBrowser)
+            {
+                var scriptElement = document.createElement('script');
+
+                scriptElement.async = false;
+                scriptElement.src = 'polyfills.bundle.js';
+                document.head.appendChild(scriptElement);
+            }
+        </script>
+    </head>
+    <body>
+        <a href="#filter-container" class="skip-link">Skip to content</a>
+        <header>
+            <nav role="navigation" aria-label="Main navigation">
+                <h1><a href="/">Restaurant Reviews</a></h1>
+            </nav>
+        </header>
+
+        <main id="maincontent">
+            <section id="filter-container" role="search" aria-labelledby="filter-heading">
+                <h2 id="filter-heading" hidden>Filter Restaurants</h2>
+                <div class="filter-options">
+                    <div class="filter-container">
+                        <div class="filter">
+                            <label for="neighborhoods-select">Neighborhood</label>
+                            <select id="neighborhoods-select" name="neighborhoods" tabindex="0">
+                                <option value="all">All Neighborhoods</option>
+                            </select>
+                        </div>
+                        <div class="filter">
+                            <label for="cuisines-select">Cuisine</label>
+                            <select id="cuisines-select" name="cuisines" tabindex="0">
+                                <option value="all">All Cuisines</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="restaurants-container" role="region" aria-labelledby="restaurants-heading">
+                <h2 id="restaurants-heading" hidden>Restaurants List</h2>
+                <ul id="restaurants-list"></ul>
+            </section>
+            <section id="map-container" role="application" aria-labelledby="map-heading">
+                <h2 id="map-heading" hidden>Restaurants on google map</h2>
+                <div id="map"></div>
+            </section>
+        </main>
+        <footer id="footer">
+            Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+            <!-- Credit to noimg.svg and noimg.png author -->
+            <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+            <!-- Credit to manifest icons author -->
+            <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+        </footer>
+
+        <!-- muicss script to load JS files on demand -->
+        <script src="loadjs.min.js"></script>
+        <script src="<%= htmlWebpackPlugin.files.chunks.swindex.entry %>"></script>
+        <script src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
+    </body>
+</html>
