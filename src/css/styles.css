@@ -1,4 +1,5 @@
 @charset "utf-8";
+@import url(https://use.fontawesome.com/releases/v5.1.0/css/all.css);
 /* CSS Document */
 
 body, html {
@@ -168,7 +169,7 @@ nav[aria-label="Main navigation"] h1 a {
     border: 1px solid #fff;
     font-family: Arial,sans-serif;
     font-size: 1rem;
-    letter-spacing: 0;
+    letter-spacing: 0; 
     padding: 1em;
     width: 100%;
     margin: 0.8rem 0 0;
@@ -241,7 +242,12 @@ nav[aria-label="Main navigation"] h1 a {
 .inside #footer {
     max-width: 100%;
 }
+#restaurant-container {
+    display: flex;
+    flex-wrap: wrap;
+}
 #restaurant-name {
+    width: 100%;
     color: #006633;
     font-family: Arial,sans-serif;
     font-size: 1.3rem;
@@ -250,6 +256,16 @@ nav[aria-label="Main navigation"] h1 a {
     margin: 0 0 1em;
     text-transform: uppercase;
     line-height: 1.1;
+}
+#restaurant-isfavorite { 
+    background: none;
+    font-size: 1rem;
+    border: none;
+    height: 1em;
+    cursor:pointer;
+}
+#restaurant-img-sources {
+    width: 100%;
 }
 #restaurant-img {
     width: 100%;
@@ -261,10 +277,9 @@ nav[aria-label="Main navigation"] h1 a {
 #restaurant-address {
     font-size: 1rem;
     margin: 1em 0;
+    width: 100%;
 }
 #restaurant-cuisine {
-    background-color: #333;
-    color: #ddd;
     font-size: 1rem;
     font-weight: 300;
     letter-spacing: 0.5em;
@@ -272,7 +287,11 @@ nav[aria-label="Main navigation"] h1 a {
     padding: 0.5em 0;
     text-align: center;
     text-transform: uppercase;
-    width: 100%;
+    width: 83%;
+    line-height: 2;
+    height: 32px;
+    color: #333;
+    background: none;
 }
 #restaurant-container, #reviews-container {
     border-bottom: 1px solid #d9d9d9;
@@ -338,6 +357,26 @@ nav[aria-label="Main navigation"] h1 a {
     #reviews-list li p {
         font-size: 1rem;
     }
+    #restaurant-isfavorite { 
+        color: #fff;
+        background-color: #a9141e;
+        font-size: 2rem;
+        border-bottom: 3px solid #eee;
+        font-size: 2rem;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        width: 17%;
+        height: 48px;
+        line-height: 0;
+    }
+    #restaurant-isfavorite:hover, #restaurant-isfavorite:active, #restaurant-isfavorite:focus { 
+        background-color: #730f16;
+    }
+    #restaurant-cuisine {
+        background-color: #333;
+        color: #ddd;   
+    }
 }
 @media screen and (min-width: 480px) {
     .filter {
@@ -365,38 +404,32 @@ nav[aria-label="Main navigation"] h1 a {
     }
 }
 @media screen and (min-width: 634px) {
-    #restaurant-container {
-        display: flex;
-        flex-wrap: wrap-reverse;
-        flex-direction: column-reverse;
-        height: 400px;
-        align-items: flex-end;
-        justify-content: flex-end;
-    }
-    #restaurant-name, #restaurant-address, #restaurant-cuisine {
-        margin: 0 0 0.5em;
-        width: calc(50% - 1em);
-    }
-    #restaurant-img-sources {
+    #restaurant-address-hours-wrapper {
         width: 50%;
-    }
-    #restaurant-name {
-        max-height: calc(10% - 0.5em);
-        order: -3;
-    }
-    #restaurant-cuisine {
-        font-size: 0.8rem;
-        width: 50%;
-        order: -2;
     }
     #restaurant-address {
-        max-height: calc(10% - 0.5em);
-        order: -4;
+        margin: 0 1em 1em 0;
     }
-    #restaurant-hours-container {
-        height: 80%;
-        width: 38%;
-        order: -5;
+    #restaurant-img-sources {
+        margin-right: 1rem;   
+        width: calc(50% - 1rem);
+    }
+    #restaurant-name {
+        margin-right: 1rem;
+        width: calc(50% - 1rem);
+    }
+    #restaurant-isfavorite { 
+        font-size: 1.2rem;
+    }
+    #restaurant-isfavorite:hover, #restaurant-isfavorite:active, #restaurant-isfavorite:focus { 
+        color: #a9141e;
+    }
+    #restaurant-cuisine {
+        width: calc(50% - 1em - 1.2rem - 2*6px);
+        padding: 0;
+        font-size: 0.8rem;
+        margin: 0 0 1em 1em;
+        text-align: left;
     }
     #reviews-container h2 {
         font-size: 1.5rem;
@@ -427,23 +460,6 @@ nav[aria-label="Main navigation"] h1 a {
     }
     #restaurants-list li:nth-child(3n) {
         margin: 1rem 0;
-    }
-    #restaurant-img-sources {
-        margin-right: 1rem;   
-        width: calc(50% - 1rem);
-    }
-    #restaurant-name {
-        order: -2;
-    }
-    #restaurant-cuisine {
-        order: -3;
-    }
-    #restaurant-cuisine {
-        max-height: calc(10% - 0.5em);
-        width: 50%;
-    }
-    #restaurant-hours-container {
-        height: 70%;
     }
 }
 @media screen and (min-width: 1031px) {

@@ -51,17 +51,22 @@
             <!-- Beginning restaurant -->
             <section id="restaurant-container" tabindex="-1" aria-labelledby="restaurant-name">
                 <h2 id="restaurant-name" tabindex="0"></h2>
+                <button id="restaurant-isfavorite" class="favorite" tabindex="0" aria-label="Mark restaurant as favorite">
+                    <i id="restaurant-isfavorite-icon" class="favorite-icon far fa-heart"></i>
+                </button>
+                <p id="restaurant-cuisine"></p>
                 <picture id="restaurant-img-sources">
                     <source id="restaurant-img-medium" media="(min-width: 353px) and (max-width: 532px)" srcset="">
                     <source id="restaurant-img-medium-large" media="(min-width: 533px) and (max-width: 633px)" srcset="">
                     <source id="restaurant-img-large" media="(min-width: 634px)" srcset="">
-                    <img id="restaurant-img">
+                    <img id="restaurant-img">   
                 </picture>
-                <p id="restaurant-cuisine"></p>
-                <p id="restaurant-address"></p>
-                <section id="restaurant-hours-container" role="region" aria-labelledby="restaurant-hours-heading">
-                    <h3 id="restaurant-hours-heading" hidden>Restaurant Hours</h3>
-                    <table id="restaurant-hours" tabindex="0"></table>
+                <section id="restaurant-address-hours-wrapper">
+                    <p id="restaurant-address"></p>
+                    <section id="restaurant-hours-container" role="region" aria-labelledby="restaurant-hours-heading">
+                        <h3 id="restaurant-hours-heading" hidden>Restaurant Hours</h3>
+                        <table id="restaurant-hours" tabindex="0"></table>
+                    </section>
                 </section>
             </section>
             <!-- end restaurant -->
