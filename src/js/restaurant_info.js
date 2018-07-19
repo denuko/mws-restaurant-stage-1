@@ -22,6 +22,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
+// Toggle 'mark as favorite' toggle and add the appropriate styles and aria-label
+// depending on whether restaurant is favorite or not
+document.getElementById('restaurant-isfavorite').addEventListener('click', (event) => {
+    const isfavoriteButton = document.getElementById('restaurant-isfavorite');
+    const isfavoriteIcon = document.getElementById('restaurant-isfavorite-icon');
+    const id = getParameterByName('id');
+    if (!isfavoriteButton.classList.contains('selected')) {
+        // Favorite restaurant and update server and idb
+        DBHelper.favoriteRestaurantById(id)
+                .then(() => {
+                    isfavoriteIcon.classList.add('fas');
+                    isfavoriteIcon.classList.remove('far');
+                    isfavoriteButton.classList.add('selected');
+                    isfavoriteButton.setAttribute('aria-label', 'Unfavorite restaurant');
+                }, (msg) => console.log(msg));
+    } else {
+        // Unavorite restaurant and update server and idb
+        DBHelper.unfavoriteRestaurantById(id)
+                .then(() => {
+                    isfavoriteIcon.classList.add('far');
+                    isfavoriteIcon.classList.remove('fas');
+                    isfavoriteButton.classList.remove('selected');
+                    isfavoriteButton.setAttribute('aria-label', 'Favorite restaurant');
+                }, (msg) => console.log(msg));
+    }
+});
+
 /**
  * Initialize Google map, called from HTML.
  */
@@ -117,6 +144,19 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
     const cuisine = document.getElementById('restaurant-cuisine');
     cuisine.innerHTML = restaurant.cuisine_type;
     cuisine.setAttribute('aria-label', `Restaurant cuisine type ${restaurant.cuisine_type}`);
+
+    // Stylize 'mark as favorite' toggle depending on whether restaurant is favorite or not
+    // and add the appropriate aria-label
+    const isfavoriteButton = document.getElementById('restaurant-isfavorite');
+    if (restaurant.is_favorite) {
+        const isfavoriteIcon = document.getElementById('restaurant-isfavorite-icon');
+        isfavoriteButton.classList.add('selected');
+        isfavoriteButton.setAttribute('aria-label', 'Unfavorite restaurant');
+        isfavoriteIcon.classList.remove('far');
+        isfavoriteIcon.classList.add('fas');
+    } else {
+        isfavoriteButton.setAttribute('aria-label', 'Favorite restaurant');
+    }
 
     // fill operating hours
     if (restaurant.operating_hours) {

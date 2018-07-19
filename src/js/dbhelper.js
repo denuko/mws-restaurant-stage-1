@@ -60,22 +60,84 @@ class DBHelper {
     }
 
     /**
+     * Favorite a restaurant by its ID.
+     * Return Promise to avoid callback functions as parameters.
+     */
+    static favoriteRestaurantById(id) {
+        return new Promise((resolve, reject) => {
+            // Search idb for restaurant
+            DBHelper.getRestaurantFromDbById(id).then(restaurant => {
+                if (restaurant) { // Got the restaurant
+                    // If restaurant found in idb, update record
+                    restaurant.is_favorite = true;
+                    DBHelper.addRestaurantToDatabase(restaurant);
+                }
+
+                // Update data in server that restaurant is favorite
+                fetch(`${DBHelper.DATABASE_URL}/${id}/?is_favorite=true`, {method: 'PUT'})
+                        .then(response => {
+                            if (response.status == 200) {
+                                resolve('Success! (Favorite restaurant)');
+                            } else {
+                                reject('Failed! (Favorite restaurant)');
+                            }
+                        })
+                        .catch(error => reject(error));
+            });
+        });
+    }
+
+    /**
+     * Favorite a restaurant by its ID.
+     * Return Promise to avoid callback functions as parameters.
+     */
+    static unfavoriteRestaurantById(id) {
+        // Search idb for restaurant
+        return new Promise((resolve, reject) => {
+            DBHelper.getRestaurantFromDbById(id).then(restaurant => {
+                if (restaurant) { // Got the restaurant
+                    // If restaurant found in idb, update record
+                    restaurant.is_favorite = false;
+                    DBHelper.addRestaurantToDatabase(restaurant);
+                }
+
+                // Update data in server that restaurant is unfavorited
+                fetch(`${DBHelper.DATABASE_URL}/${id}/?is_favorite=false`, {method: 'PUT'})
+                        .then(response => {
+                            if (response.status == 200) {
+                                resolve('Success! (Favorite restaurant)');
+                            } else {
+                                reject('Failed! (Favorite restaurant)');
+                            }
+                        })
+                        .catch(error => reject(error));
+            });
+        });
+    }
+
+
+    /**
+     * Search restaurant in db by its id.
+     * Return Promise to avoid callback functions as parameters for actions
+     * need to be done after restaurant is searched.
+     */
+    static getRestaurantFromDbById(id) {
+        return new Promise((resolve, reject) => {
+            DBHelper.DATABASE_PROMISE.then(db => {
+                const tx = db.transaction('restaurants');
+                return tx.objectStore('restaurants').get(Number(id));
+            }).then(restaurant => {
+                resolve(restaurant);
+            });
+        });
+    }
+
+    /**
      * Fetch a restaurant by its ID.
      */
     static fetchRestaurantById(id, callback) {
-        DBHelper.DATABASE_PROMISE.then(db => {
-            const tx = db.transaction('restaurants');
-
-            return tx.objectStore('restaurants').index('id').openCursor();
-        }).then(function checkIfRestaurantFound(cursor) {
-            if (!cursor)
-                return;
-            if (cursor.value.id == id) {
-                return cursor.value;
-            } else {
-                return cursor.continue().then(checkIfRestaurantFound);
-            }
-        }).then(restaurant => {
+        // Search restaurant in db by its id.
+        DBHelper.getRestaurantFromDbById(id).then(restaurant => {
             if (restaurant) {
                 callback(null, restaurant);
             } else {
@@ -94,7 +156,7 @@ class DBHelper {
                     }
                 });
             }
-        });
+        }, (msg) => console.log(msg));
     }
 
     /**
