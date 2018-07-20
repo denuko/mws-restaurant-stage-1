@@ -111,4 +111,39 @@ export const getLazyLoadPlugin = () => {
         }; // Your options here. See "recipes" for more information about async.
         b.appendChild(s);
     }(window, document));
-}
+};
+
+/**
+ * Convert unix timestamp to date string.
+ */
+export const timestampToDate = timestamp => {
+    const date = new Date(timestamp);
+
+    const day = date.getDate();
+    const month = getMonthName(date.getMonth());
+    const year = date.getFullYear();
+    
+    return `${month} ${day}, ${year}`;
+};
+
+/**
+ * Return month's name depending on its number.
+ * Code is from https://www.w3schools.com/jsref/jsref_getmonth.asp
+ */
+const getMonthName = (monthIndex) => {
+    const month = new Array();
+    month[0] = 'January';
+    month[1] = 'February';
+    month[2] = 'March';
+    month[3] = 'April';
+    month[4] = 'May';
+    month[5] = 'June';
+    month[6] = 'July';
+    month[7] = 'August';
+    month[8] = 'September';
+    month[9] = 'October';
+    month[10] = 'November';
+    month[11] = 'December';
+
+    return month[monthIndex];
+};

@@ -1,5 +1,5 @@
 import './../css/styles.css';
-import {addImageSourceToPicture, imageNamesBySize, getGoogleMapsApi, getLazyLoadPlugin} from './helper.js';
+import {addImageSourceToPicture, imageNamesBySize, getGoogleMapsApi, getLazyLoadPlugin, timestampToDate} from './helper.js';
 import DBHelper from './dbhelper.js';
 
 let restaurant;
@@ -189,7 +189,7 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+const fillReviewsHTML = (restaurantId = self.restaurant.id) => {
     const container = document.getElementById('reviews-container');
     container.setAttribute('aria-labelledby', 'reviews-heading');
 
@@ -198,18 +198,29 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     title.id = 'reviews-heading';
     container.appendChild(title);
 
-    if (!reviews) {
-        const noReviews = document.createElement('p');
-        noReviews.innerHTML = 'No reviews yet!';
-        container.appendChild(noReviews);
-        return;
-    }
-    const ul = document.getElementById('reviews-list');
-    reviews.forEach(review => {
-        ul.appendChild(createReviewHTML(review));
+    // Get restaurant's reviews
+    DBHelper.fetchReviewsByRestaurantId(restaurantId).then(reviews_data => {
+        // Restaurant's reviews
+        const reviews = reviews_data[0];
+        // addToDb is a boolean flag that indicates to add or not reviews to db
+        const addToDb = reviews_data[1];
+        if (!reviews.length) {
+            const noReviews = document.createElement('p');
+            noReviews.innerHTML = 'No reviews yet!';
+            container.appendChild(noReviews);
+            return;
+        }
+        const ul = document.getElementById('reviews-list');
+        reviews.forEach(review => {
+            if (addToDb) {
+                // Add review to db
+                DBHelper.addReviewToDatabase(review);
+            }
+            ul.appendChild(createReviewHTML(review));
+        });
+        container.appendChild(ul);
     });
-    container.appendChild(ul);
-}
+};
 
 /**
  * Create review HTML and add it to the webpage.
@@ -220,8 +231,11 @@ const createReviewHTML = (review) => {
     name.innerHTML = review.name;
     li.appendChild(name);
 
+    // Convert review's property createdAt (timestamp) to date string.
+    const dateString = timestampToDate(review.createdAt);
+
     const date = document.createElement('p');
-    date.innerHTML = review.date;
+    date.innerHTML = dateString;
     li.appendChild(date);
 
     const rating = document.createElement('p');

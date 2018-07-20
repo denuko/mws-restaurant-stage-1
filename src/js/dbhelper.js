@@ -24,6 +24,15 @@ class DBHelper {
     }
 
     /**
+     * Database URL Reviews.
+     * URL for access to reviews entity.
+     */
+    static get DATABASE_URL_REVIEWS() {
+        const port = 1337; // Change this to your server port
+        return `http://localhost:${port}/reviews`;
+    }
+
+    /**
      * Call the variable defined after the DBHelper class which is a bool
      * that indicates whether to store a restaurant into database
      * before adding its html.
@@ -39,12 +48,16 @@ class DBHelper {
             return Promise.resolve();
         }
 
-        return  idb.open('restaurants-db', 1, upgradeDb => {
+        return  idb.open('restaurants-db', 2, upgradeDb => {
             switch (upgradeDb.oldVersion) {
                 case 0:
                     upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
                     const restaurantsStore = upgradeDb.transaction.objectStore('restaurants');
                     restaurantsStore.createIndex('id', 'id');
+                case 1:
+                    upgradeDb.createObjectStore('reviews', {keyPath: 'id'});
+                    const reviewsStore = upgradeDb.transaction.objectStore('reviews');
+                    reviewsStore.createIndex('restaurant_id', 'restaurant_id');
             }
         });
     }
@@ -310,6 +323,48 @@ class DBHelper {
             return tx.complete;
         }).then(function() {
             console.log('Restaurant added');
+        });
+    }
+
+    /**
+     * Fetch all review by restaurant id.
+     */
+    static fetchReviewsByRestaurantId(restaurant_id) {
+        return new Promise((resolve, reject) => {
+            // Check if restaurant's reviews exist in db
+            DBHelper.DATABASE_PROMISE.then(db => {
+                const tx = db.transaction('reviews');
+                const reviewsStore = tx.objectStore('reviews');
+                const restaurantIdIndex = reviewsStore.index('restaurant_id');
+                return restaurantIdIndex.getAll(restaurant_id);
+            }).then(reviews => {
+                if (!reviews.length) {
+                    // If not found in db, fetch them fro server
+                    fetch(`${DBHelper.DATABASE_URL_REVIEWS}/?restaurant_id=${restaurant_id}`)
+                            .then(response => response.json())
+                            // Resolve reviews with a boolean flag that indicates to add reviews to db
+                            .then(reviews => resolve([reviews, true]))
+                            .catch(error => reject(error));
+                } else {
+                    // If found in db, resolve reviews with a boolean flag that indicates to not add reviews to db
+                    resolve([reviews, false]);
+                }
+            });
+        });
+    }
+
+    /**
+     * Add review to database.
+     */
+    static addReviewToDatabase(review) {
+        DBHelper.DATABASE_PROMISE.then(function(db) {
+            const tx = db.transaction('reviews', 'readwrite');
+            const reviewsStore = tx.objectStore('reviews');
+            reviewsStore.put(review);
+
+            return tx.complete;
+        }).then(() => {
+            console.log('Review added');
         });
     }
 }
