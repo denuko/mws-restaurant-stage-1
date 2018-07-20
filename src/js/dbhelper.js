@@ -115,7 +115,6 @@ class DBHelper {
         });
     }
 
-
     /**
      * Search restaurant in db by its id.
      * Return Promise to avoid callback functions as parameters for actions
@@ -141,20 +140,18 @@ class DBHelper {
             if (restaurant) {
                 callback(null, restaurant);
             } else {
-                // fetch all restaurants with proper error handling.
-                DBHelper.fetchRestaurants((error, restaurants) => {
-                    if (error) {
-                        callback(error, null);
-                    } else {
-                        const restaurant = restaurants.find(r => r.id == id);
-                        if (restaurant) { // Got the restaurant
-                            callback(null, restaurant);
-                            DBHelper.addRestaurantToDatabase(restaurant);
-                        } else { // Restaurant does not exist in the database
-                            callback('Restaurant does not exist', null);
-                        }
-                    }
-                });
+                // fetch restaurant by id using stage 3 server api GET endpoint.
+                fetch(`${DBHelper.DATABASE_URL}/${id}/`)
+                        .then(response => response.json())
+                        .then(restaurant => {
+                            if (restaurant) { // Got the restaurant
+                                callback(null, restaurant);
+                                DBHelper.addRestaurantToDatabase(restaurant);
+                            } else { // Restaurant does not exist in the database
+                                callback('Restaurant does not exist', null);
+                            }
+                        })
+                        .catch(error => callback(error, null));
             }
         }, (msg) => console.log(msg));
     }
