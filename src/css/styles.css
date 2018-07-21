@@ -351,7 +351,7 @@ nav[aria-label="Main navigation"] h1 a {
         font-size: 1rem;
         padding: 1.5em 0; 
     }
-    #reviews-container h2 {
+    #reviews-container h3 {
         margin: 0 0 0 1rem;
     }
     #reviews-list li p {
@@ -431,7 +431,7 @@ nav[aria-label="Main navigation"] h1 a {
         margin: 0 0 1em 1em;
         text-align: left;
     }
-    #reviews-container h2 {
+    #reviews-container h3 {
         font-size: 1.5rem;
     }
 }
