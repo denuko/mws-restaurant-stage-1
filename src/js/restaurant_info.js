@@ -49,6 +49,86 @@ document.getElementById('restaurant-isfavorite').addEventListener('click', (even
     }
 });
 
+const addReviewForm = document.getElementById('add-review-form');
+addReviewForm.addEventListener('submit', event => {
+    event.preventDefault();
+
+    const loadingImg = document.getElementById('add-review-submit-loading');
+    loadingImg.style.display = 'inline';
+    const reviewSubmit = document.getElementById('review-submit');
+    reviewSubmit.disabled = true;
+
+    // Reset messages and error classes
+    const messageSuccess = document.getElementById('add-review-submit-success');
+    messageSuccess.style.display = 'none';
+    const messageError = document.getElementById('add-review-submit-error');
+    messageError.style.display = 'none';
+    const messageErrorEmpty = document.getElementById('add-review-submit-error-empty');
+    messageErrorEmpty.style.display = 'none';
+    const addRreviewName = document.getElementById('add-review-name');
+    addRreviewName.classList.remove('add-review-submit-message-field-error');
+    addRreviewName.setAttribute('aria-invalid', 'false');
+    const addRreviewRating = document.getElementById('add-review-rating');
+    addRreviewRating.classList.remove('add-review-submit-message-field-error');
+    addRreviewRating.setAttribute('aria-invalid', 'false');
+    const addRreviewComments = document.getElementById('add-review-comments');
+    addRreviewComments.classList.remove('add-review-submit-message-field-error');
+    addRreviewComments.setAttribute('aria-invalid', 'false');
+
+    const review = {};
+    review.restaurant_id = parseInt(document.getElementById('add-review-restaurant-id').value);
+    review.name = addRreviewName.value;
+    review.rating = parseInt(addRreviewRating.value);
+    review.comments = addRreviewComments.value;
+    review.createdAt = Date.now();
+
+    // Validate inputs
+    let valid_data = true;
+    if (!(review.restaurant_id > 0)) {
+        valid_data = false;
+        loadingImg.style.display = 'none';
+        reviewSubmit.disabled = false;
+        messageError.style.display = 'inline';
+        console.log('Invalid restaurant_id');
+    }
+
+    if (valid_data) {
+        let empty_data = false;
+        if (review.name == '') {
+            addRreviewName.classList.add('add-review-submit-message-field-error');
+            addRreviewName.setAttribute('aria-invalid', 'true');
+            valid_data = false;
+            empty_data = true;
+        }
+        if (!(review.rating >= 1 || review.rating <= 5)) {
+            addRreviewRating.classList.add('add-review-submit-message-field-error');
+            addRreviewRating.setAttribute('aria-invalid', 'true');
+            valid_data = false;
+            empty_data = true;
+        }
+        if (review.comments == '') {
+            addRreviewComments.classList.add('add-review-submit-message-field-error');
+            addRreviewComments.setAttribute('aria-invalid', 'true');
+            valid_data = false;
+            empty_data = true;
+        }
+
+        if (!empty_data) {
+            // Append review to html
+            const ul = document.getElementById('reviews-list');
+            ul.prepend(createReviewHTML(review));
+            loadingImg.style.display = 'none';
+            reviewSubmit.disabled = false;
+            messageSuccess.style.display = 'inline';
+            addReviewForm.reset();
+        } else {
+            loadingImg.style.display = 'none';
+            reviewSubmit.disabled = false;
+            messageErrorEmpty.style.display = 'inline';
+        }
+    }
+});
+
 /**
  * Initialize Google map, called from HTML.
  */
@@ -162,6 +242,11 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
     if (restaurant.operating_hours) {
         fillRestaurantHoursHTML();
     }
+
+// Add restaurant id value to add a review hidden input
+    const addReviewRestaurantId = document.getElementById('add-review-restaurant-id');
+    addReviewRestaurantId.value = restaurant.id;
+
 // fill reviews
     fillReviewsHTML();
 }

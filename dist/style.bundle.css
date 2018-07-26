@@ -293,12 +293,12 @@ nav[aria-label="Main navigation"] h1 a {
     color: #333;
     background: none;
 }
-#restaurant-container, #reviews-container {
+#restaurant-container, #reviews-container, #add-review-container {
     border-bottom: 1px solid #d9d9d9;
     border-top: 1px solid #fff;
     padding: 1.5em 1em;
 }
-#reviews-container h3 {
+#reviews-container h3, #add-review-container h3 {
     color: #006633;
     font-size: 1.5em;
     font-weight: 300;
@@ -330,6 +330,75 @@ nav[aria-label="Main navigation"] h1 a {
     color: #666;  
     font-size: 0.9rem;
 }
+#add-review-form-container {
+    background: #333333;
+    padding: 1em;
+}
+#add-review-form-container label {
+    color: #fff;   
+    display: block;
+}
+#add-review-name, #add-review-comments {
+    background-color: white;
+    border: 1px solid #fff;
+    font-family: Arial,sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0; 
+    padding: 1em;
+    width: calc(100% - 2em);
+    display: block;
+    margin: 0.5em 0 1em 0;
+}
+#add-review-rating {
+    background-color: white;
+    border: 1px solid #fff;
+    font-family: Arial,sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0; 
+    padding: 1em;
+    display: block;   
+    margin: 0.5em 0 1em 0;
+}
+#add-review-comments {
+    max-width: 100%;
+}
+#review-submit {
+    color: #fff;
+    background-color: #006633;
+    border-bottom: 3px solid #eee;
+    font-size: 1rem;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    min-height: 48px;
+    line-height: 0;
+    padding: 1em;
+    cursor: pointer;
+}
+#review-submit:hover, #review-submit:active, #review-submit:focus {
+    background: #014825;
+}
+#add-review-submit-loading {
+    display: none;
+    color: #fff;  
+}
+#add-review-submit-loading-icon {
+    font-size: 1.5rem;
+}
+.add-review-submit-message {
+    display: none;
+    padding: 0.5em 1em;
+    color: #fff;
+}
+.add-review-submit-message.success {
+    background: #006633;
+}
+.add-review-submit-message.error {
+    background: #a9141e;
+}
+.add-review-submit-message-field-error {
+    outline: 3px #f30313 solid;   
+}
 @media screen and (max-width: 633px)  {
     nav[aria-label="Main navigation"] h1 a {
         font-size: 1rem;
@@ -347,11 +416,11 @@ nav[aria-label="Main navigation"] h1 a {
     #restaurant-hours td {
         font-size: 1rem; 
     }
-    #reviews-container {
+    #reviews-container, #add-review-container {
         font-size: 1rem;
         padding: 1.5em 0; 
     }
-    #reviews-container h3 {
+    #reviews-container h3, #add-review-container h3 {
         margin: 0 0 0 1rem;
     }
     #reviews-list li p {
@@ -431,7 +500,7 @@ nav[aria-label="Main navigation"] h1 a {
         margin: 0 0 1em 1em;
         text-align: left;
     }
-    #reviews-container h3 {
+    #reviews-container h3, #add-review-container h3 {
         font-size: 1.5rem;
     }
 }
@@ -463,7 +532,7 @@ nav[aria-label="Main navigation"] h1 a {
     }
 }
 @media screen and (min-width: 1031px) {
-    .filter-container, #restaurant-container, #reviews-container {
+    .filter-container, #restaurant-container, #reviews-container, #add-review-container {
         width: 1031px;
         margin: 0 auto;
     }

@@ -70,6 +70,39 @@
                 </section>
             </section>
             <!-- end restaurant -->
+            <!-- Beginning add a review  -->
+            <section id="add-review-container" role="region" aria-labelledby="add-review-heading">
+                <h3 id="add-review-heading">Add a review</h3>
+                <div id="add-review-form-container">
+                    <form id="add-review-form">
+                        <label>Name:
+                            <input type="text" id="add-review-name" name="name" value="" aria-required="true"           >
+                        </label>
+                        <label>Rating: 
+                            <select id="add-review-rating" name="rating" aria-required="true"> 
+                                <option disabled="true" selected="true">-- No rating selected --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </label>
+                        <label>Comments:
+                            <textarea id="add-review-comments" name="comments" rows="5" aria-required="true"></textarea>
+                        </label>
+                        <input type="hidden" id="add-review-restaurant-id" name="restaurant_id" value="">
+                        <button id="review-submit" type="submit">Submit!</button>
+                        <span id="add-review-submit-loading">
+                            <i id="add-review-submit-loading-icon" class="fa fa-spinner fa-spin"></i>
+                        </span>
+                        <span class="add-review-submit-message success" id="add-review-submit-success" role="alert">Review submitted successfully!</span>
+                        <span class="add-review-submit-message error" id="add-review-submit-error" role="alert">Review couldn't be add.</span>
+                        <span class="add-review-submit-message error" id="add-review-submit-error-empty" role="alert">Please fill all required fields.</span>
+                    </form>
+                </div>
+            </section>
+            <!-- End add a review -->
             <!-- Beginning reviews -->
             <section id="reviews-container" role="region">
                 <ul id="reviews-list"></ul>
