@@ -55,7 +55,9 @@ class DBHelper {
                     const restaurantsStore = upgradeDb.transaction.objectStore('restaurants');
                     restaurantsStore.createIndex('id', 'id');
                 case 1:
-                    upgradeDb.createObjectStore('reviews', {keyPath: 'id'});
+                    // Add an AI id_local attribute for reviews and use it as keypath instead of id, 
+                    // to deal with newly created reviews that don't have an id.
+                    upgradeDb.createObjectStore('reviews', {keyPath: 'id_local', autoIncrement: true});
                     const reviewsStore = upgradeDb.transaction.objectStore('reviews');
                     reviewsStore.createIndex('restaurant_id', 'restaurant_id');
             }

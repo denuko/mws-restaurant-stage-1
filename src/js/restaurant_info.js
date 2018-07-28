@@ -114,6 +114,9 @@ addReviewForm.addEventListener('submit', event => {
         }
 
         if (!empty_data) {
+            // Add review to db
+            DBHelper.addReviewToDatabase(review);
+
             // Append review to html
             const ul = document.getElementById('reviews-list');
             ul.prepend(createReviewHTML(review));
