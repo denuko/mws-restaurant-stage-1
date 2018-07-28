@@ -348,6 +348,8 @@ class DBHelper {
                             .then(reviews => resolve([reviews, true]))
                             .catch(error => reject(error));
                 } else {
+                    // Sort reviews by date created desc before displaying them
+                    reviews.sort((a, b) => { return a.createdAt < b.createdAt });
                     // If found in db, resolve reviews with a boolean flag that indicates to not add reviews to db
                     resolve([reviews, false]);
                 }
