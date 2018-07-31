@@ -115,15 +115,28 @@ addReviewForm.addEventListener('submit', event => {
 
         if (!empty_data) {
             // Add review to db
-            DBHelper.addReviewToDatabase(review);
-
-            // Append review to html
-            const ul = document.getElementById('reviews-list');
-            ul.prepend(createReviewHTML(review));
-            loadingImg.style.display = 'none';
-            reviewSubmit.disabled = false;
-            messageSuccess.style.display = 'inline';
-            addReviewForm.reset();
+            DBHelper.addReview(review).then(review => { 
+                // Review posted to server to successfully
+                // Append review to html
+                const ul = document.getElementById('reviews-list');
+                ul.prepend(createReviewHTML(review));
+                loadingImg.style.display = 'none';
+                reviewSubmit.disabled = false;
+                messageSuccess.style.display = 'inline';
+                addReviewForm.reset();
+            }, msg => {  
+                console.log(msg);
+                
+                // Review could not be created to server
+                // Append review to html
+                const ul = document.getElementById('reviews-list');
+                ul.prepend(createReviewHTML(review));
+                loadingImg.style.display = 'none';
+                reviewSubmit.disabled = false;
+                messageSuccess.style.display = 'inline';
+                addReviewForm.reset();
+                // TODO: Css to mark review as online
+            });
         } else {
             loadingImg.style.display = 'none';
             reviewSubmit.disabled = false;
@@ -369,4 +382,15 @@ const getParameterByName = (name, url) => {
     if (!results[2])
         return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+if (navigator.serviceWorker) {
+    navigator.serviceWorker.addEventListener('message', event => {
+        // Accept a message that tells that an offline review has been added successfuly
+        if (event.data.action == 'post_success') {
+            // Add the review to idb
+            console.log(event.data.review);
+            DBHelper.addReviewToDatabase(event.data.review);
+        }
+    });
 }

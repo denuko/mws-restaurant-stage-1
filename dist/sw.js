@@ -27,10 +27,33 @@ const CACHE_STATIC_FILES = [
     'https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/10.5.2/lazyload.min.js'
 ];
 
-// Accept a message that tells service worker to take over (skip waiting)
+// Store reviews that could not be stored in server to sync them
+let offlineReviews = {};
+
 self.addEventListener('message', event => {
-    if (event.data.action === 'skipWaiting') {
-        self.skipWaiting();
+    switch (event.data.action) {
+        case 'skipWaiting':
+            // Accept a message that tells service worker to take over (skip waiting)
+            self.skipWaiting();
+            break;
+        case 'sync':
+            // Accept a message that tells service worker to register a review sync
+            const review = event.data.review;
+
+            // Create an id to store data for sync
+            const uuid = Math.random().toString(36).substr(2, 9);
+            const tag = `review_${uuid}`;
+            // If tag exists try again to create one
+            while (tag in offlineReviews) {
+                const uuid = Math.random().toString(36).substr(2, 9);
+                const tag = `review_${uuid}`;
+            }
+            
+            offlineReviews[tag] = event.data.review;
+
+            // Register a sync and pass the id as tag for it to get the data
+            self.registration.sync.register(tag);
+            break;
     }
 });
 
@@ -70,6 +93,44 @@ self.addEventListener('fetch', event => {
         // Cache this files
         event.respondWith(serveStaticFiles(event.request));
     }
+});
+
+// Sync actions
+self.addEventListener('sync', event => {
+    // Get offline review from offlineReviews by event.tag
+    const review = offlineReviews[event.tag];
+
+    // Attempt to post the review to server
+    event.waitUntil(fetch('http://localhost:1337/reviews/', {
+        method: 'POST',
+        body: JSON.stringify(review)
+    }).then(response => {
+        return response.json();
+    }).then(addedReview => {
+        if (addedReview) {
+            delete offlineReviews[event.tag];
+
+            self.clients.matchAll().then(clients => {
+                clients.forEach(client => {
+                    // When we get the visible client that is our current page
+                    if (client.visibilityState == 'visible') {
+                        review.id = addedReview.id;
+                        // Post message to client add review
+                        client.postMessage({
+                            action: 'post_success',
+                            review: review
+                        });
+                    }
+                });
+            });
+
+            console.log('Review stored in server');
+        } else {
+            console.log('Review could not be stored in server');
+        }
+    }).catch(error => {
+        console.log('Test error catch', error);
+    }));
 });
 
 /**

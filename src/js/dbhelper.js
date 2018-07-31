@@ -349,10 +349,32 @@ class DBHelper {
                             .catch(error => reject(error));
                 } else {
                     // Sort reviews by date created desc before displaying them
-                    reviews.sort((a, b) => { return a.createdAt < b.createdAt });
+                    // TODO: Sort not working
+                    reviews.sort((a, b) => {
+                        return a.createdAt < b.createdAt
+                    });
                     // If found in db, resolve reviews with a boolean flag that indicates to not add reviews to db
                     resolve([reviews, false]);
                 }
+            });
+        });
+    }
+
+    static addReview(review) {
+        return new Promise((resolve, reject) => {
+            DBHelper.postReviewToServer(review).then(review => {
+                console.log('Review created in server');
+                resolve(review);
+            }, msg => {
+                console.log(msg);
+
+                // If post failed, just add it to idb
+                DBHelper.addReviewToDatabase(review);
+                if (navigator.serviceWorker) {
+                    navigator.serviceWorker.controller.postMessage({action: 'sync', review: review});
+                }
+
+                reject('Review could not be created in server');
             });
         });
     }
@@ -361,14 +383,36 @@ class DBHelper {
      * Add review to database.
      */
     static addReviewToDatabase(review) {
-        DBHelper.DATABASE_PROMISE.then(function(db) {
+        DBHelper.DATABASE_PROMISE.then(db => {
             const tx = db.transaction('reviews', 'readwrite');
             const reviewsStore = tx.objectStore('reviews');
             reviewsStore.put(review);
-
+            
             return tx.complete;
         }).then(() => {
             console.log('Review added');
+        });
+    }
+
+    static postReviewToServer(review) {
+        return new Promise((resolve, reject) => {
+            fetch('http://localhost:1337/reviews/', {
+                method: 'POST',
+                body: JSON.stringify(review)
+            }).then(response => {
+                return response.json();
+            }).then(addedReview => {
+                if (addedReview) {
+                    review.id = addedReview.id;
+                    DBHelper.addReviewToDatabase(review);
+                    console.log('Review stored in server');
+                    resolve(review);
+                } else {
+                    reject('An error occured while saving in server');
+                }
+            }).catch(error => {
+                reject(error);
+            });
         });
     }
 }
