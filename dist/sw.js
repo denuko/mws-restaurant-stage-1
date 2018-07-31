@@ -1,28 +1,30 @@
-const CACHE_NAME = 'mws-restaurant-v7';
+const CACHE_NAME = 'mws-restaurant-v8';
 // 
 // Create  a seperate cache for images, because 
 // the idea is to let them live between versions of the app
 const CACHE_IMG_NAME = 'mws-restaurant-img';
 
 // Create a const for all static files to be explicitly cached
-// TODO: Fix static files to work with webpack generated bundles
 const CACHE_STATIC_FILES = [
     '/',
     '/restaurant.html',
-    '/dist/js/dbhelper.js',
-    '/dist/js/helper.js',
-    '/dist/js/restaurant_info.js',
-    '/dist/js/main.js',
-    '/dist/js/sw/index.js',
-    '/dist/idb/idb.js',
-    '/dist/loadjs.min.js',
-    '/dist/polyfills/append.js',
-    '/dist/polyfills/fetch.js',
-    '/dist/polyfills/picturefill.js',
-    '/dist/polyfills/polyfill.min.js',
-    '/dist/polyfills/intersection-observer.js',
-    '/css/styles.css',
+    '/loadjs.min.js',
+    '/loadjs.min.js',
+    '/main.bundle.js',
+    '/main.bundle.js.map',
+    '/polyfills.bundle.js',
+    '/polyfills.bundle.js.map',
+    '/restaurant_info.bundle.js',
+    '/restaurant_info.bundle.js.map',
+    '/style.bundle.css',
+    '/style.bundle.css.map',
+    '/swindex.bundle.js',
+    '/swindex.bundle.js.map',
     '/noimg.png',
+    '/noimg.svg',
+    '/icon-144x144.png',
+    '/icon-192x192.png',
+    '/icon-512x512.png',
     'https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/8.7.1/lazyload.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/10.5.2/lazyload.min.js'
 ];
