@@ -369,10 +369,11 @@ class DBHelper {
                 console.log(msg);
 
                 // If post failed, just add it to idb
-                DBHelper.addReviewToDatabase(review);
-                if (navigator.serviceWorker) {
-                    navigator.serviceWorker.controller.postMessage({action: 'sync', review: review});
-                }
+                DBHelper.addReviewToDatabase(review).then(review => {
+                    if (navigator.serviceWorker) {
+                        navigator.serviceWorker.controller.postMessage({action: 'sync', review: review});
+                    }
+                });
 
                 reject('Review could not be created in server');
             });
@@ -383,14 +384,23 @@ class DBHelper {
      * Add review to database.
      */
     static addReviewToDatabase(review) {
-        DBHelper.DATABASE_PROMISE.then(db => {
-            const tx = db.transaction('reviews', 'readwrite');
-            const reviewsStore = tx.objectStore('reviews');
-            reviewsStore.put(review);
-            
-            return tx.complete;
-        }).then(() => {
-            console.log('Review added');
+        return new Promise((resolve, reject) => {
+            DBHelper.DATABASE_PROMISE.then(db => {
+                const tx = db.transaction('reviews', 'readwrite');
+                const reviewsStore = tx.objectStore('reviews');
+                reviewsStore.put(review);
+
+                return tx.complete;
+            }).then(() => {
+                // Get keypath of the review we 've just added (last added review)
+                DBHelper.getLastReviewId().then(id_local => {
+                    console.log('Review added');
+
+                    // Assign keypath to review object for later use
+                    review.id_local = id_local;
+                    resolve(review);
+                }, msg => console.log(msg));
+            });
         });
     }
 
@@ -405,6 +415,7 @@ class DBHelper {
                 if (addedReview) {
                     review.id = addedReview.id;
                     DBHelper.addReviewToDatabase(review);
+
                     console.log('Review stored in server');
                     resolve(review);
                 } else {
@@ -412,6 +423,30 @@ class DBHelper {
                 }
             }).catch(error => {
                 reject(error);
+            });
+        });
+    }
+
+    /**
+     * Get keypath (id_local) of last added review.
+     */
+    static getLastReviewId() {
+        return new Promise((resolve, reject) => {
+            DBHelper.DATABASE_PROMISE.then(db => {
+                var tx = db.transaction('reviews');
+                var reviewsStore = tx.objectStore('reviews');
+
+                return reviewsStore.openCursor(null, 'prev');
+            }).then(cursor => {
+                if (!cursor) {
+                    reject('Last id not found');
+                    return;
+                }
+
+                return cursor.value.id_local;
+            }).then(id_local => {
+                resolve(id_local);
+                console.log('Done cursoring');
             });
         });
     }
