@@ -345,14 +345,37 @@ class DBHelper {
                     fetch(`${DBHelper.DATABASE_URL_REVIEWS}/?restaurant_id=${restaurant_id}`)
                             .then(response => response.json())
                             // Resolve reviews with a boolean flag that indicates to add reviews to db
-                            .then(reviews => resolve([reviews, true]))
+                            .then(reviews => {      
+                                // Sort reviews by date created desc before displaying them
+                                reviews.sort((a, b) => {
+                                    if (a.createdAt < b.createdAt) {
+                                        return 1;
+                                    }
+                                    if (a.createdAt > b.createdAt) {
+                                        return -1;
+                                    }
+
+                                    // createdAt must be equal
+                                    return 0;
+                                });
+                                
+                                resolve([reviews, true]);
+                            })
                             .catch(error => reject(error));
                 } else {
                     // Sort reviews by date created desc before displaying them
-                    // TODO: Sort not working
                     reviews.sort((a, b) => {
-                        return a.createdAt < b.createdAt
+                        if (a.createdAt < b.createdAt) {
+                            return 1;
+                        }
+                        if (a.createdAt > b.createdAt) {
+                            return -1;
+                        }
+
+                        // createdAt must be equal
+                        return 0;
                     });
+                    
                     // If found in db, resolve reviews with a boolean flag that indicates to not add reviews to db
                     resolve([reviews, false]);
                 }
