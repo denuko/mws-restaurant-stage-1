@@ -115,27 +115,26 @@ addReviewForm.addEventListener('submit', event => {
 
         if (!empty_data) {
             // Add review to db
-            DBHelper.addReview(review).then(review => { 
+            DBHelper.addReview(review).then(review => {
                 // Review posted to server to successfully
                 // Append review to html
                 const ul = document.getElementById('reviews-list');
                 ul.prepend(createReviewHTML(review));
                 loadingImg.style.display = 'none';
                 reviewSubmit.disabled = false;
+                messageSuccess.textContent = 'Review submitted successfully!';
                 messageSuccess.style.display = 'inline';
                 addReviewForm.reset();
-            }, msg => {  
-                console.log(msg);
-                
+            }, review => {
                 // Review could not be created to server
                 // Append review to html
                 const ul = document.getElementById('reviews-list');
-                ul.prepend(createReviewHTML(review));
+                ul.prepend(createReviewHTML(review, true));
                 loadingImg.style.display = 'none';
                 reviewSubmit.disabled = false;
+                messageSuccess.textContent = 'Review submitted successfully! (OFFLINE)';
                 messageSuccess.style.display = 'inline';
                 addReviewForm.reset();
-                // TODO: Css to mark review as online
             });
         } else {
             loadingImg.style.display = 'none';
@@ -317,7 +316,7 @@ const fillReviewsHTML = (restaurantId = self.restaurant.id) => {
                 // Add review to db
                 DBHelper.addReviewToDatabase(review);
             }
-            ul.appendChild(createReviewHTML(review));
+            ul.appendChild(createReviewHTML(review, !('id' in review)));
         });
         container.appendChild(ul);
     });
@@ -326,8 +325,15 @@ const fillReviewsHTML = (restaurantId = self.restaurant.id) => {
 /**
  * Create review HTML and add it to the webpage.
  */
-const createReviewHTML = (review) => {
+const createReviewHTML = (review, offline) => {
     const li = document.createElement('li');
+    if (offline) {
+        const offline = document.createElement('p');
+        offline.innerHTML = 'OFFLINE';
+        offline.id = `review-offline-${review.id_local}`;
+        offline.className = 'review-offline';
+        li.appendChild(offline);
+    }
     const name = document.createElement('p');
     name.innerHTML = review.name;
     li.appendChild(name);
@@ -389,8 +395,10 @@ if (navigator.serviceWorker) {
         // Accept a message that tells that an offline review has been added successfuly
         if (event.data.action == 'post_success') {
             // Add the review to idb
-            console.log(event.data.review);
             DBHelper.addReviewToDatabase(event.data.review);
+            
+            const reviewOffline = document.getElementById(`review-offline-${event.data.review.id_local}`);
+            reviewOffline.remove();
         }
     });
 }

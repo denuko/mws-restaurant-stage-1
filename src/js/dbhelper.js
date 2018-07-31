@@ -373,9 +373,9 @@ class DBHelper {
                     if (navigator.serviceWorker) {
                         navigator.serviceWorker.controller.postMessage({action: 'sync', review: review});
                     }
-                });
 
-                reject('Review could not be created in server');
+                    reject(review);
+                });
             });
         });
     }

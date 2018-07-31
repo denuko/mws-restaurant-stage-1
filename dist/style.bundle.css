@@ -326,6 +326,13 @@ nav[aria-label="Main navigation"] h1 a {
     margin: 0 0 1em;
     font-size: 0.9rem;
 }
+#reviews-list li p.review-offline {
+    font-size: 1.5rem;
+    background-color: #730f16;
+    color: #fff;
+    padding: 0 1em;
+    text-align: center;   
+}
 #restaurant-hours td {
     color: #666;  
     font-size: 0.9rem;
