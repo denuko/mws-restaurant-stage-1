@@ -1,1 +1,1 @@
-web: py -m http.server
+web: npm build
